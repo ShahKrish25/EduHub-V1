@@ -175,7 +175,8 @@ router.put("/:id", upload.single("file"), async (req, res) => {
       message: "Resource updated successfully", 
       resource: {
         ...resource.toObject(),
-        fileUrl: resource.fileUrl ? `http://localhost:5000/${resource.fileUrl}` : null
+        // fileUrl: resource.fileUrl ? `http://localhost:5000/${resource.fileUrl}` : null
+        fileUrl: resource.fileUrl ? `https://edu-hub-v1-f2ek.vercel.app/${resource.fileUrl}` : null
       }
     });
   } catch (err) {
