@@ -1312,6 +1312,12 @@ export default function EnhancedAiToolsPage() {
           animation: scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
       `}</style>
+
+      <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
+        <p className="text-gray-500 dark:text-gray-400">
+          © {new Date().getFullYear()} EduHub. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }

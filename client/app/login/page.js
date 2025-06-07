@@ -824,7 +824,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-500">
-            <p>© 2024 EduHub. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} EduHub. All rights reserved.</p>
             <div className="flex justify-center gap-4 mt-2">
               <Link href="#" className="hover:text-gray-700 transition-colors">
                 Privacy Policy

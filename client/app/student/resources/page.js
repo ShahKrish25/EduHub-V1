@@ -1495,6 +1495,11 @@ export default function StudentResourceHub() {
         </div>
       )}
       {/* <Home /> */}
+      <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
+        <p className="text-gray-500 dark:text-gray-400">
+          © {new Date().getFullYear()} EduHub. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
