@@ -11,7 +11,9 @@ const auth = require('./middleware/auth.js');
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000']
+}));
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use("/api/resources", resourceRoutes);
