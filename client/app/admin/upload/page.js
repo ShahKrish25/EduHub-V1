@@ -165,7 +165,7 @@ export default function AdminUploadPage() {
     const fetchStats = async () => {
       try {
         // const res = await fetch('http://localhost:5000/api/resources/stats')
-        const res = await fetch('https://edu-hub-v1.vercel.app//api/resources/stats')
+        const res = await fetch('https://edu-hub-v1.vercel.app/api/resources/stats')
         if (!res.ok) throw new Error('Failed to fetch stats')
         const data = await res.json()
         setStats(data)
