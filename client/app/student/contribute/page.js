@@ -418,7 +418,7 @@ export default function Home() {
                   >
                     <Avatar className="h-8 w-8">
                       {user ? (
-                        <AvatarImage src={"http://localhost:5000/placeholder.svg"} alt={user.name} />
+                        <AvatarImage src={"https://edu-hub-v1.vercel.app/placeholder.svg"} alt={user.name} />
                       ) : (
                         <AvatarFallback>U</AvatarFallback>
                       )}

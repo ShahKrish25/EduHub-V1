@@ -127,7 +127,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (branch && semester) {
       fetch(
-        `http://localhost:5000/api/resources/subjects?branch=${branch}&semester=${semester}`,
+        `https://edu-hub-v1.vercel.app/api/resources/subjects?branch=${branch}&semester=${semester}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -165,7 +165,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
 
-    fetch("http://localhost:5000/api/stats", {
+    fetch("https://edu-hub-v1.vercel.app/api/stats", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -202,7 +202,7 @@ export default function StudentResourceHub() {
       return;
     }
 
-    fetch("http://localhost:5000/api/auth/me", {
+    fetch("https://edu-hub-v1.vercel.app/api/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -239,7 +239,7 @@ export default function StudentResourceHub() {
   useEffect(() => {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
-    fetch("http://localhost:5000/api/notifications", {
+    fetch("https://edu-hub-v1.vercel.app/api/notifications", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -258,7 +258,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     fetch(
-      `http://localhost:5000/api/resources?branch=${encodeURIComponent(
+      `https://edu-hub-v1.vercel.app/api/resources?branch=${encodeURIComponent(
         branch
       )}&semester=${encodeURIComponent(semester)}&type=timetable`,
       {
@@ -295,7 +295,7 @@ export default function StudentResourceHub() {
     try {
       const token = localStorage.getItem("studyhub_token");
       const res = await fetch(
-        `http://localhost:5000/api/resources?branch=${encodeURIComponent(
+        `https://edu-hub-v1.vercel.app/resources?branch=${encodeURIComponent(
           branch
         )}&semester=${encodeURIComponent(
           semester
@@ -464,7 +464,7 @@ export default function StudentResourceHub() {
                     onClick={() =>
                       openPreview(
                         "pdf",
-                        `http://localhost:5000/${item.fileUrl}`,
+                        `https://edu-hub-v1.vercel.app/${item.fileUrl}`,
                         item.title
                       )
                     }
@@ -482,7 +482,7 @@ export default function StudentResourceHub() {
                   >
                     <a
                       target="_blank"
-                      href={`http://localhost:5000/${item.fileUrl}`}
+                      href={`https://edu-hub-v1.vercel.app/${item.fileUrl}`}
                       download
                     >
                       <Download className="h-4 w-4" />
@@ -576,7 +576,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch("http://localhost:5000/api/notifications/mark-all-read", {
+    await fetch("https://edu-hub-v1.vercel.app/api/notifications/mark-all-read", {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -589,7 +589,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch(`http://localhost:5000/api/notifications/${id}`, {
+    await fetch(`https://edu-hub-v1.vercel.app/api/notifications/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -601,7 +601,7 @@ export default function StudentResourceHub() {
   const fetchNotifications = () => {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
-    fetch("http://localhost:5000/api/notifications", {
+    fetch("https://edu-hub-v1.vercel.app/api/notifications", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -783,7 +783,7 @@ export default function StudentResourceHub() {
                       {/* <AvatarImage src={"/placeholder.svg"} alt={user.name} /> */}
                       {user ? (
                         <AvatarImage
-                          src={"http://localhost:5000/placeholder.svg"}
+                          src={"https://edu-hub-v1.vercel.app/placeholder.svg"}
                           alt={user.name}
                         />
                       ) : (
@@ -1311,7 +1311,7 @@ export default function StudentResourceHub() {
                                 >
                                   <a
                                     target="_blank"
-                                    href={`http://localhost:5000/${tt.fileUrl}`}
+                                    href={`https://edu-hub-v1.vercel.app/${tt.fileUrl}`}
                                     download
                                   >
                                     <Download className="h-4 w-4 mr-1" />{" "}

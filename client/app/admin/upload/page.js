@@ -109,7 +109,8 @@ export default function AdminUploadPage() {
         // return
       // }
 
-      fetch(`http://localhost:5000/api/resources/subjects?branch=${branch}&semester=${semester}`, {
+      fetch(`https://edu-hub-v1.vercel.app/api/resources/subjects?branch=${branch}&semester=${semester}`, {
+      // fetch(`http://localhost:5000/api/resources/subjects?branch=${branch}&semester=${semester}`, {
         headers: {
           // Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -141,7 +142,8 @@ export default function AdminUploadPage() {
   // Add new useEffect for managing resources
   useEffect(() => {
     if (manageBranch && manageSemester) {
-      fetch(`http://localhost:5000/api/resources/subjects?branch=${manageBranch}&semester=${manageSemester}`, {
+      // fetch(`http://localhost:5000/api/resources/subjects?branch=${manageBranch}&semester=${manageSemester}`, {
+      fetch(`https://edu-hub-v1.vercel.app/api/resources/subjects?branch=${manageBranch}&semester=${manageSemester}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -162,7 +164,8 @@ export default function AdminUploadPage() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/resources/stats')
+        // const res = await fetch('http://localhost:5000/api/resources/stats')
+        const res = await fetch('https://edu-hub-v1.vercel.app//api/resources/stats')
         if (!res.ok) throw new Error('Failed to fetch stats')
         const data = await res.json()
         setStats(data)
@@ -205,7 +208,8 @@ export default function AdminUploadPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/resources/upload", {
+      // const res = await fetch("http://localhost:5000/api/resources/upload", {
+      const res = await fetch("https://edu-hub-v1.vercel.app/api/resources/upload", {
         method: "POST",
         // headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -296,7 +300,8 @@ export default function AdminUploadPage() {
         ...(manageSubject && { subject: manageSubject }),
         ...(manageType && { type: manageType })
       })
-      const res = await fetch(`http://localhost:5000/api/resources?${queryParams}`)
+      // const res = await fetch(`http://localhost:5000/api/resources?${queryParams}`)
+      const res = await fetch(`https://edu-hub-v1.vercel.app/api/resources?${queryParams}`)
       if (!res.ok) throw new Error("Failed to fetch resources")
       const data = await res.json()
       setResources(data)
@@ -313,7 +318,8 @@ export default function AdminUploadPage() {
   const deleteResource = async (id) => {
     if (!confirm("Are you sure you want to delete this resource?")) return
     try {
-      const res = await fetch(`http://localhost:5000/api/resources/${id}`, {
+      // const res = await fetch(`http://localhost:5000/api/resources/${id}`, {
+      const res = await fetch(`https://edu-hub-v1.vercel.app/api/resources/${id}`, {
         method: "DELETE",
       })
       if (!res.ok) throw new Error("Failed to delete resource")
@@ -344,7 +350,8 @@ export default function AdminUploadPage() {
         formData.append("file", editResource.newFile)
       }
 
-      const res = await fetch(`http://localhost:5000/api/resources/${editResource._id}`, {
+      // const res = await fetch(`http://localhost:5000/api/resources/${editResource._id}`, {
+      const res = await fetch(`https://edu-hub-v1.vercel.app/api/resources/${editResource._id}`, {
         method: "PUT",
         body: formData,
       })
@@ -1096,7 +1103,8 @@ export default function AdminUploadPage() {
                           )}
                           {resource.fileUrl && (
                             <a
-                              href={`http://localhost:5000/${resource.fileUrl}`}
+                              // href={`http://localhost:5000/${resource.fileUrl}`}
+                              href={`https://edu-hub-v1.vercel.app/${resource.fileUrl}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"

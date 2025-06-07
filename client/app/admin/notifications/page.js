@@ -1,268 +1,3 @@
-// "use client";
-// import { useState, useEffect } from "react";
-// import { Bell, Plus, Trash2, Check, AlertCircle, Info, CheckCircle } from "lucide-react";
-// import { useRouter } from "next/navigation";
-
-// export default function AdminNotificationsPage() {
-//   const router = useRouter();
-//   const [notifications, setNotifications] = useState([]);
-//   const [title, setTitle] = useState("");
-//   const [message, setMessage] = useState("");
-//   const [type, setType] = useState("info");
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     const token = localStorage.getItem("studyhub_token");
-//     if (!token) {
-//       router.push("/login");
-//       return;
-//     }
-//     fetchNotifications();
-//   }, [router]);
-
-//   const fetchNotifications = async () => {
-//     try {
-//       const token = localStorage.getItem("studyhub_token");
-//       if (!token) {
-//         router.push("/login");
-//         return;
-//       }
-
-//       const res = await fetch("http://localhost:5000/api/notifications", {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Content-Type': 'application/json',
-//           'Accept': 'application/json'
-//         }
-//       });
-
-//       if (!res.ok) {
-//         if (res.status === 401) {
-//           localStorage.removeItem("studyhub_token");
-//           router.push("/login");
-//           return;
-//         }
-//         throw new Error('Failed to fetch notifications');
-//       }
-
-//       const data = await res.json();
-//       setNotifications(data);
-//       setError("");
-//     } catch (error) {
-//       console.error("Error fetching notifications:", error);
-//       setError("Failed to load notifications. Please try again.");
-//     }
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-//     setError("");
-
-//     try {
-//       const token = localStorage.getItem("studyhub_token");
-//       if (!token) {
-//         router.push("/login");
-//         return;
-//       }
-
-//       const res = await fetch("http://localhost:5000/api/notifications", {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Content-Type': 'application/json',
-//           'Accept': 'application/json'
-//         },
-//         body: JSON.stringify({ title, message, type })
-//       });
-
-//       if (!res.ok) {
-//         if (res.status === 401) {
-//           localStorage.removeItem("studyhub_token");
-//           router.push("/login");
-//           return;
-//         }
-//         throw new Error('Failed to create notification');
-//       }
-
-//       const data = await res.json();
-//       setTitle("");
-//       setMessage("");
-//       setType("info");
-//       await fetchNotifications();
-//       setError("");
-//     } catch (error) {
-//       console.error("Error creating notification:", error);
-//       setError("Failed to create notification. Please try again.");
-//     }
-
-//     setLoading(false);
-//   };
-
-//   const handleDelete = async (id) => {
-//     try {
-//       const token = localStorage.getItem("studyhub_token");
-//       if (!token) {
-//         router.push("/login");
-//         return;
-//       }
-
-//       const res = await fetch(`http://localhost:5000/api/notifications/${id}`, {
-//         method: "DELETE",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Content-Type': 'application/json',
-//           'Accept': 'application/json'
-//         }
-//       });
-
-//       if (!res.ok) {
-//         if (res.status === 401) {
-//           localStorage.removeItem("studyhub_token");
-//           router.push("/login");
-//           return;
-//         }
-//         throw new Error('Failed to delete notification');
-//       }
-
-//       await fetchNotifications();
-//       setError("");
-//     } catch (error) {
-//       console.error("Error deleting notification:", error);
-//       setError("Failed to delete notification. Please try again.");
-//     }
-//   };
-
-//   const getTypeIcon = (type) => {
-//     switch (type) {
-//       case 'success':
-//         return <CheckCircle className="h-5 w-5 text-green-500" />;
-//       case 'warning':
-//         return <AlertCircle className="h-5 w-5 text-yellow-500" />;
-//       case 'error':
-//         return <AlertCircle className="h-5 w-5 text-red-500" />;
-//       default:
-//         return <Info className="h-5 w-5 text-blue-500" />;
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 p-8">
-//       <div className="max-w-4xl mx-auto">
-//         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-//           <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
-//             <Bell className="h-6 w-6" />
-//             Create New Notification
-//           </h1>
-          
-//           {error && (
-//             <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-//               {error}
-//             </div>
-//           )}
-
-//           <form onSubmit={handleSubmit} className="space-y-4">
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Title
-//               </label>
-//               <input
-//                 type="text"
-//                 value={title}
-//                 onChange={(e) => setTitle(e.target.value)}
-//                 className="w-full p-2 border rounded-md"
-//                 required
-//               />
-//             </div>
-
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Message
-//               </label>
-//               <textarea
-//                 value={message}
-//                 onChange={(e) => setMessage(e.target.value)}
-//                 className="w-full p-2 border rounded-md h-24"
-//                 required
-//               />
-//             </div>
-
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Type
-//               </label>
-//               <select
-//                 value={type}
-//                 onChange={(e) => setType(e.target.value)}
-//                 className="w-full p-2 border rounded-md"
-//               >
-//                 <option value="info">Info</option>
-//                 <option value="success">Success</option>
-//                 <option value="warning">Warning</option>
-//                 <option value="error">Error</option>
-//               </select>
-//             </div>
-
-//             <button
-//               type="submit"
-//               disabled={loading}
-//               className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
-//             >
-//               {loading ? (
-//                 "Creating..."
-//               ) : (
-//                 <>
-//                   <Plus className="h-5 w-5" />
-//                   Create Notification
-//                 </>
-//               )}
-//             </button>
-//           </form>
-//         </div>
-
-//         <div className="bg-white rounded-lg shadow-md p-6">
-//           <h2 className="text-xl font-bold mb-4">Recent Notifications</h2>
-//           {notifications.length === 0 ? (
-//             <p className="text-gray-500 text-center py-4">No notifications yet</p>
-//           ) : (
-//             <div className="space-y-4">
-//               {notifications.map((notification) => (
-//                 <div
-//                   key={notification._id}
-//                   className="border rounded-lg p-4 flex items-start justify-between"
-//                 >
-//                   <div className="flex items-start gap-3">
-//                     {getTypeIcon(notification.type)}
-//                     <div>
-//                       <h3 className="font-semibold">{notification.title}</h3>
-//                       <p className="text-gray-600 text-sm mt-1">
-//                         {notification.message}
-//                       </p>
-//                       <p className="text-gray-400 text-xs mt-2">
-//                         {new Date(notification.createdAt).toLocaleString()}
-//                       </p>
-//                     </div>
-//                   </div>
-//                   <button
-//                     onClick={() => handleDelete(notification._id)}
-//                     className="text-red-500 hover:text-red-700 transition-colors"
-//                   >
-//                     <Trash2 className="h-5 w-5" />
-//                   </button>
-//                 </div>
-//               ))}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// } 
-
-
-// v0 
-
 "use client"
 import { useState, useEffect } from "react"
 import {
@@ -343,7 +78,8 @@ export default function AdminNotificationsPage() {
         return
       }
 
-      const res = await fetch("http://localhost:5000/api/notifications", {
+      // const res = await fetch("http://localhost:5000/api/notifications", {
+      const res = await fetch("https://edu-hub-v1.vercel.app/api/notifications", {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -392,7 +128,8 @@ export default function AdminNotificationsPage() {
         return
       }
 
-      const res = await fetch("http://localhost:5000/api/notifications", {
+      // const res = await fetch("http://localhost:5000/api/notifications", {
+      const res = await fetch("https://edu-hub-v1.vercel.app/api/notifications", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -433,7 +170,8 @@ export default function AdminNotificationsPage() {
         return
       }
 
-      const res = await fetch(`http://localhost:5000/api/notifications/${id}`, {
+      // const res = await fetch(`http://localhost:5000/api/notifications/${id}`, {
+      const res = await fetch(`https://edu-hub-v1.vercel.app/api/notifications/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

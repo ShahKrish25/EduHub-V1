@@ -1,64 +1,3 @@
-// "use client";
-// import { useState } from "react";
-
-// export default function RegisterPage() {
-//   // State for form fields
-//   const [username, setUsername] = useState("");
-//   const [message, setMessage] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const handleRegister = async (e) => {
-//     e.preventDefault();
-//     const res = await fetch('http://localhost:5000/api/auth/register', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({ username, email, password }),
-//     });
-//     const data = await res.json();
-//     console.log(data);
-//     setMessage(data.message || data.error);
-//   };
-
-//   return (
-//     <div className="flex min-h-screen justify-center items-center bg-gray-100">
-//       <div className="bg-white p-6 rounded-lg shadow-md w-96">
-//         <h1 className="text-xl font-bold mb-4 text-zinc-800">Register</h1>
-//         <form className="flex flex-col gap-4" onSubmit={handleRegister}>
-//           <input
-//             type="text"
-//             placeholder="Name"
-//             className="p-2 border rounded text-zinc-700"
-//             value={username}
-//             onChange={(e) => setUsername(e.target.value)}
-//           />
-//           <input
-//             type="email"
-//             placeholder="Email" 
-//             className="p-2 border rounded text-zinc-700"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//           />
-//           <input
-//             type="password"
-//             placeholder="Password"
-//             className="p-2 border rounded text-zinc-700"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//           />
-//           <button className="bg-green-600 text-white p-2 rounded">Register</button>
-//           {message && <p className="text-center text-sm text-gray-600 mt-2">{message}</p>}
-
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-// v0
-
 "use client"
 import { useState, useEffect } from "react"
 import React from "react"
@@ -167,7 +106,8 @@ export default function SignupPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      // const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch("https://edu-hub-v1.vercel.app/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
