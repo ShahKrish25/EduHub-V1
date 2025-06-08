@@ -58,4 +58,4 @@ yarn-error.log*
 *.swo
 
 # Uploads
-uploads/ 
+# uploads/ 
