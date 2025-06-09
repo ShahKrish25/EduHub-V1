@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000','http://localhost:5000', 'https://edu-hub-v1.vercel.app', 'https://edu-hub-v1-f2ek.vercel.app', 'https://eduhub-v1.onrender.com'],
+  origin: ['http://localhost:3000','http://localhost:5000', 'https://edu-hub-v1.vercel.app','https://edu-hub-v2.vercel.app', 'https://edu-hub-v1-f2ek.vercel.app', 'https://eduhub-v1.onrender.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
