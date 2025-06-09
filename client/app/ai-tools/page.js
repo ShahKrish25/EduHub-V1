@@ -22,8 +22,9 @@ import {
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
-
+const dotenv = require('dotenv');
 export default function EnhancedAiToolsPage() {
+  dotenv.config();
   // ... keep existing code (state declarations and useEffect)
   useEffect(() => {
     const token = localStorage.getItem("studyhub_token");
@@ -116,7 +117,7 @@ export default function EnhancedAiToolsPage() {
       selectedFiles.forEach((file) => formData.append("files", file));
       formData.append("session_id", sessionId);
 
-      const res = await fetch("http://localhost:5001/upload-files", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_AI_SERVER}upload-files`, {
         method: "POST",
         body: formData,
       });
@@ -148,7 +149,7 @@ export default function EnhancedAiToolsPage() {
     setSummary("");
     setSummaryError("");
     try {
-      const res = await fetch("http://localhost:5001/summarize-content", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_AI_SERVER}summarize-content`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: sessionId, type: summaryType }),
@@ -175,7 +176,7 @@ export default function EnhancedAiToolsPage() {
         text: "Context cleared! Upload new documents and I'll help you analyze them.",
       },
     ]);
-    await fetch("http://localhost:5001/clear-context", {
+    await fetch(`${process.env.NEXT_PUBLIC_AI_SERVER}clear-context`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ session_id: sessionId }),
@@ -205,7 +206,7 @@ export default function EnhancedAiToolsPage() {
     let aiMsg = { sender: "ai", text: "" };
     setChatMessages((msgs) => [...msgs, aiMsg]);
     try {
-      const res = await fetch("http://localhost:5001/chat", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_AI_SERVER}chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMsg.text, session_id: sessionId }),

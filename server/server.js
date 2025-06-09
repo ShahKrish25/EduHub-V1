@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://edu-hub-v1.vercel.app', 'https://edu-hub-v1-f2ek.vercel.app'],
+  origin: ['http://localhost:3000','http://localhost:5000', 'https://edu-hub-v1.vercel.app', 'https://edu-hub-v1-f2ek.vercel.app', 'https://eduhub-v1.onrender.com'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
@@ -30,7 +30,7 @@ app.get('/api/stats', auth, async (req, res) => {
     
     const totalResources = await Resource.countDocuments();
     const activeStudents = await User.countDocuments();
-    const branches = 6; // Hardcoded for now
+    const branches = 7; // Hardcoded for now
     const subjects = await Resource.distinct('subject').length;
 
     res.json({
@@ -58,5 +58,5 @@ mongoose.connect(MONGO_URI, {
   
 
 app.listen(PORT, () => {
-  console.log(`running on http://localhost:${PORT} `);
+  console.log(`running on http://${process.env.BACKEND_URL} on the port ${PORT} `);
 });

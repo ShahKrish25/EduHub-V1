@@ -56,7 +56,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "/components/ui/avatar";
 import Link from "next/link";
 import { TextGenerateEffect } from "/app/ui/text-generate-effect";
 import { Meteors } from "/app/ui/meteors";
+const dotenv = require('dotenv');
 export default function StudentResourceHub() {
+  dotenv.config();
   const [user, setUser] = useState(null);
   const [branch, setBranch] = useState("");
   const [semester, setSemester] = useState("");
@@ -127,7 +129,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (branch && semester) {
       fetch(
-        `https://edu-hub-v1.vercel.app/api/resources/subjects?branch=${branch}&semester=${semester}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources/subjects?branch=${branch}&semester=${semester}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -165,7 +167,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
 
-    fetch("https://edu-hub-v1.vercel.app/api/stats", {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/stats`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -180,7 +182,7 @@ export default function StudentResourceHub() {
         setStats({
           totalResources: data.totalResources || 0,
           activeStudents: data.activeStudents || 0,
-          branches: data.branches || 6,
+          branches: data.branches || 7,
           subjects: data.subjects || 0,
         });
       })
@@ -189,7 +191,7 @@ export default function StudentResourceHub() {
         setStats({
           totalResources: 0,
           activeStudents: 0,
-          branches: 6,
+          branches: 7,
           subjects: 0,
         });
       });
@@ -202,7 +204,7 @@ export default function StudentResourceHub() {
       return;
     }
 
-    fetch("https://edu-hub-v1.vercel.app/api/auth/me", {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -239,7 +241,7 @@ export default function StudentResourceHub() {
   useEffect(() => {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
-    fetch("https://edu-hub-v1.vercel.app/api/notifications", {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -258,7 +260,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     fetch(
-      `https://edu-hub-v1.vercel.app/api/resources?branch=${encodeURIComponent(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources?branch=${encodeURIComponent(
         branch
       )}&semester=${encodeURIComponent(semester)}&type=timetable`,
       {
@@ -295,7 +297,7 @@ export default function StudentResourceHub() {
     try {
       const token = localStorage.getItem("studyhub_token");
       const res = await fetch(
-        `https://edu-hub-v1.vercel.app/resources?branch=${encodeURIComponent(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources?branch=${encodeURIComponent(
           branch
         )}&semester=${encodeURIComponent(
           semester
@@ -309,9 +311,9 @@ export default function StudentResourceHub() {
         }
       );
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch resources");
-      }
+      // if (!res.ok) {
+      //   console.log("failed to fetch...", res.status);
+      // }
 
       const data = await res.json();
       // console.log('Fetched resources:', data); // Debug log
@@ -337,7 +339,7 @@ export default function StudentResourceHub() {
         }
       }, 200);
     } catch (error) {
-      console.error("Error fetching resources:", error);
+      // console.error("Error fetching resources:", error);
       setResources({
         youtube: [],
         handwritten: [],
@@ -464,7 +466,7 @@ export default function StudentResourceHub() {
                     onClick={() =>
                       openPreview(
                         "pdf",
-                        `https://edu-hub-v1.vercel.app/${item.fileUrl}`,
+                        `${process.env.NEXT_PUBLIC_BACKEND_URL}${item.fileUrl}`,
                         item.title
                       )
                     }
@@ -482,7 +484,7 @@ export default function StudentResourceHub() {
                   >
                     <a
                       target="_blank"
-                      href={`https://edu-hub-v1.vercel.app/${item.fileUrl}`}
+                      href={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.fileUrl}`}
                       download
                     >
                       <Download className="h-4 w-4" />
@@ -490,13 +492,13 @@ export default function StudentResourceHub() {
                   </Button>
                 </>
               )}
-            {item.link && type !== "youtube" && (
+            {item.fileUrl && type !== "youtube" && (
               <Button
                 asChild
                 size="sm"
                 className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
               >
-                <a href={item.link} target="_blank" rel="noreferrer">
+                <a href={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.fileUrl}`} target="_blank" rel="noreferrer">
                   <Eye className="h-4 w-4 mr-1" />
                   View
                 </a>
@@ -576,7 +578,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch("https://edu-hub-v1.vercel.app/api/notifications/mark-all-read", {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/mark-all-read`, {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -589,7 +591,7 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch(`https://edu-hub-v1.vercel.app/api/notifications/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -601,7 +603,7 @@ export default function StudentResourceHub() {
   const fetchNotifications = () => {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
-    fetch("https://edu-hub-v1.vercel.app/api/notifications", {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -637,8 +639,6 @@ export default function StudentResourceHub() {
       </div>
     );
   }
-  const words = `Oxygen gets you high. In a catastrophic emergency, we're taking giant, panicked breaths. Suddenly you become euphoric, docile. You accept your fate. It's all right here. Emergency water landing, six hundred miles an hour. Blank faces, calm as Hindu cows
-`;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
@@ -783,7 +783,7 @@ export default function StudentResourceHub() {
                       {/* <AvatarImage src={"/placeholder.svg"} alt={user.name} /> */}
                       {user ? (
                         <AvatarImage
-                          src={"https://edu-hub-v1.vercel.app/placeholder.svg"}
+                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}placeholder.svg`}
                           alt={user.name}
                         />
                       ) : (
@@ -1311,7 +1311,7 @@ export default function StudentResourceHub() {
                                 >
                                   <a
                                     target="_blank"
-                                    href={`https://edu-hub-v1.vercel.app/${tt.fileUrl}`}
+                                    href={`${process.env.NEXT_PUBLIC_BACKEND_URL}${tt.fileUrl}`}
                                     download
                                   >
                                     <Download className="h-4 w-4 mr-1" />{" "}

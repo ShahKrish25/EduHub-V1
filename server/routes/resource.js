@@ -6,6 +6,7 @@ const Resource = require("../models/Resource");
 const Branch = require("../models/Branch");
 // const auth = require("../middleware/auth");
 const fs = require("fs");
+const dotenv = require('dotenv');
 
 const router = express.Router();
 
@@ -20,6 +21,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+dotenv.config();
 
 // Helper function to delete file
 const deleteFile = async (filePath) => {
@@ -176,7 +178,7 @@ router.put("/:id", upload.single("file"), async (req, res) => {
       resource: {
         ...resource.toObject(),
         // fileUrl: resource.fileUrl ? `http://localhost:5000/${resource.fileUrl}` : null
-        fileUrl: resource.fileUrl ? `https://edu-hub-v1-f2ek.vercel.app/${resource.fileUrl}` : null
+        fileUrl: resource.fileUrl ? `http://${process.env.BACKEND_URL}${resource.fileUrl}` : null
       }
     });
   } catch (err) {

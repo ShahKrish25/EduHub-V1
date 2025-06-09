@@ -22,7 +22,7 @@ import {
 } from "lucide-react"
 import { Button } from "/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "/components/ui/card"
-
+const dotenv = require('dotenv');
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -144,8 +144,7 @@ export default function LoginPage() {
     }
 
     try {
-      const res = await fetch("https://edu-hub-v1.vercel.app/api/auth/login", {
-      // const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

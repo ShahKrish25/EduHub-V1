@@ -27,8 +27,9 @@ import {
   DropdownMenuTrigger,
 } from "/components/ui/dropdown-menu";
 import Link from "next/link";
-
+const dotenv = require('dotenv')
 export default function Home() {
+  dotenv.config();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [submissionForm, setSubmissionForm] = useState({
     name: "",
@@ -88,7 +89,7 @@ export default function Home() {
       return;
     }
     
-    fetch("http://localhost:5000/api/auth/me", {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/auth/me`, {
       headers: { 
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -126,7 +127,7 @@ export default function Home() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     // You might remove notification fetching if not relevant for this page
-    fetch("http://localhost:5000/api/notifications", {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -141,7 +142,7 @@ export default function Home() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch("http://localhost:5000/api/notifications/mark-all-read", {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/mark-all-read`, {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -155,7 +156,7 @@ export default function Home() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch(`http://localhost:5000/api/notifications/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -169,7 +170,7 @@ export default function Home() {
      const token = localStorage.getItem("studyhub_token");
     if (!token) return;
      // You might remove notification fetching if not relevant for this page
-    fetch("http://localhost:5000/api/notifications", {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())

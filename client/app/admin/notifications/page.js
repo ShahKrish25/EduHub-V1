@@ -21,8 +21,10 @@ import {
 import { useRouter } from "next/navigation"
 import { Avatar, AvatarFallback } from "/components/ui/avatar"
 import { Button } from "/components/ui/button"
+const dotenv = require('dotenv');
 
 export default function AdminNotificationsPage() {
+  dotenv.config();
   const router = useRouter()
   const [notifications, setNotifications] = useState([])
   const [title, setTitle] = useState("")
@@ -78,8 +80,8 @@ export default function AdminNotificationsPage() {
         return
       }
 
-      // const res = await fetch("http://localhost:5000/api/notifications", {
-      const res = await fetch("https://edu-hub-v1.vercel.app/api/notifications", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications`, {
+      // const res = await fetch("https://edu-hub-v1.vercel.app/api/notifications", {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -129,7 +131,7 @@ export default function AdminNotificationsPage() {
       }
 
       // const res = await fetch("http://localhost:5000/api/notifications", {
-      const res = await fetch("https://edu-hub-v1.vercel.app/api/notifications", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -171,7 +173,7 @@ export default function AdminNotificationsPage() {
       }
 
       // const res = await fetch(`http://localhost:5000/api/notifications/${id}`, {
-      const res = await fetch(`https://edu-hub-v1.vercel.app/api/notifications/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

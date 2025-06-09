@@ -34,8 +34,9 @@ import {
 import { Avatar, AvatarFallback } from "/components/ui/avatar"
 import { Button } from "/components/ui/button"
 import { Badge } from "/components/ui/badge"
-
+const dotenv = require('dotenv');
 export default function AdminUploadPage() {
+  dotenv.config();
   const [branch, setBranch] = useState("")
   const [semester, setSemester] = useState("")
   const [subject, setSubject] = useState("")
@@ -109,7 +110,7 @@ export default function AdminUploadPage() {
         // return
       // }
 
-      fetch(`https://edu-hub-v1.vercel.app/api/resources/subjects?branch=${branch}&semester=${semester}`, {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources/subjects?branch=${branch}&semester=${semester}`, {
       // fetch(`http://localhost:5000/api/resources/subjects?branch=${branch}&semester=${semester}`, {
         headers: {
           // Authorization: `Bearer ${token}`,
@@ -143,7 +144,7 @@ export default function AdminUploadPage() {
   useEffect(() => {
     if (manageBranch && manageSemester) {
       // fetch(`http://localhost:5000/api/resources/subjects?branch=${manageBranch}&semester=${manageSemester}`, {
-      fetch(`https://edu-hub-v1.vercel.app/api/resources/subjects?branch=${manageBranch}&semester=${manageSemester}`, {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources/subjects?branch=${manageBranch}&semester=${manageSemester}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -165,7 +166,7 @@ export default function AdminUploadPage() {
     const fetchStats = async () => {
       try {
         // const res = await fetch('http://localhost:5000/api/resources/stats')
-        const res = await fetch('https://edu-hub-v1.vercel.app/api/resources/stats')
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources/stats`)
         if (!res.ok) throw new Error('Failed to fetch stats')
         const data = await res.json()
         setStats(data)
@@ -209,7 +210,7 @@ export default function AdminUploadPage() {
 
     try {
       // const res = await fetch("http://localhost:5000/api/resources/upload", {
-      const res = await fetch("https://edu-hub-v1.vercel.app/api/resources/upload", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources/upload`, {
         method: "POST",
         // headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -301,7 +302,7 @@ export default function AdminUploadPage() {
         ...(manageType && { type: manageType })
       })
       // const res = await fetch(`http://localhost:5000/api/resources?${queryParams}`)
-      const res = await fetch(`https://edu-hub-v1.vercel.app/api/resources?${queryParams}`)
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources?${queryParams}`)
       if (!res.ok) throw new Error("Failed to fetch resources")
       const data = await res.json()
       setResources(data)
@@ -319,7 +320,7 @@ export default function AdminUploadPage() {
     if (!confirm("Are you sure you want to delete this resource?")) return
     try {
       // const res = await fetch(`http://localhost:5000/api/resources/${id}`, {
-      const res = await fetch(`https://edu-hub-v1.vercel.app/api/resources/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources/${id}`, {
         method: "DELETE",
       })
       if (!res.ok) throw new Error("Failed to delete resource")
@@ -351,7 +352,7 @@ export default function AdminUploadPage() {
       }
 
       // const res = await fetch(`http://localhost:5000/api/resources/${editResource._id}`, {
-      const res = await fetch(`https://edu-hub-v1.vercel.app/api/resources/${editResource._id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources/${editResource._id}`, {
         method: "PUT",
         body: formData,
       })
@@ -1104,7 +1105,7 @@ export default function AdminUploadPage() {
                           {resource.fileUrl && (
                             <a
                               // href={`http://localhost:5000/${resource.fileUrl}`}
-                              href={`https://edu-hub-v1.vercel.app/${resource.fileUrl}`}
+                              href={`https://${process.env.NEXT_PUBLIC_BACKEND_URL}${resource.fileUrl}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"

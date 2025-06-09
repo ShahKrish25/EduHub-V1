@@ -1,94 +1,3 @@
-# import os
-# from dotenv import load_dotenv
-# from flask import Flask, request, jsonify, Response, stream_with_context
-# from flask_cors import CORS
-# from groq import Groq
-# import io
-# from PyPDF2 import PdfReader
-
-# load_dotenv()
-
-# app = Flask(__name__)
-# CORS(app)
-
-# # Initialize Groq client (add your API key if needed)
-# client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-
-# def extract_text_from_pdf(file_stream):
-#     reader = PdfReader(file_stream)
-#     text = ""
-#     for page in reader.pages:
-#         text += page.extract_text() or ""
-#     return text
-
-# def groq_chat(messages, model="meta-llama/llama-4-scout-17b-16e-instruct", max_tokens=1024, temperature=1):
-#     completion = client.chat.completions.create(
-#         model=model,
-#         messages=messages,
-#         temperature=temperature,
-#         max_completion_tokens=max_tokens,
-#         top_p=1,
-#         stream=False,
-#         stop=None,
-#     )
-#     return completion.choices[0].message.content
-
-# @app.route('/summarize-pdf', methods=['POST'])
-# def summarize_pdf():
-#     if 'file' not in request.files:
-#         return jsonify({'error': 'No file uploaded'}), 400
-#     file = request.files['file']
-#     text = extract_text_from_pdf(file.stream)
-#     if not text.strip():
-#         return jsonify({'error': 'No text found in PDF'}), 400
-
-#     prompt = f"Summarize the following PDF content in simple terms:\n\n{text[:4000]}"
-#     messages = [
-#         {"role": "user", "content": prompt}
-#     ]
-#     try:
-#         summary = groq_chat(messages)
-#         return jsonify({'summary': summary})
-#     except Exception as e:
-#         return jsonify({'error': str(e)}), 500
-
-# @app.route('/chat', methods=['POST'])
-# def chat():
-#     data = request.json
-#     user_message = data.get('message', '')
-#     if not user_message:
-#         return jsonify({'error': 'No message provided'}), 400
-
-#     messages = [
-#         {"role": "user", "content": user_message}
-#     ]
-
-#     def generate():
-#         try:
-#             completion = client.chat.completions.create(
-#                 model="meta-llama/llama-4-scout-17b-16e-instruct",
-#                 messages=messages,
-#                 temperature=1,
-#                 max_completion_tokens=1024,
-#                 top_p=1,
-#                 stream=True,
-#                 stop=None,
-#             )
-#             for chunk in completion:
-#                 content = chunk.choices[0].delta.content or ""
-#                 yield content
-#         except Exception as e:
-#             yield f"\n\n**Error:** {str(e)}"
-
-#     return Response(stream_with_context(generate()), mimetype='text/markdown')
-
-# if __name__ == '__main__':
-#     app.run(port=5001, debug=True)
-
-
-
-# claude
-
 import os
 import base64
 import json
@@ -107,13 +16,34 @@ import csv
 from pathlib import Path
 import hashlib
 
+# Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
-CORS(app)
+# Check for required environment variables
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY environment variable is not set. Please set it in your .env file.")
 
-# Initialize Groq client
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+app = Flask(__name__)
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:3000",  # React default port
+            "http://localhost:5173",  # Vite default port
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:5173"
+        ],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+
+# Initialize Groq client with error handling
+try:
+    client = Groq(api_key=GROQ_API_KEY)
+except Exception as e:
+    print(f"Error initializing Groq client: {str(e)}")
+    raise
 
 # Store conversation context and uploaded files
 conversation_contexts = {}
