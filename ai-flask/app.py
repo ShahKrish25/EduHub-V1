@@ -31,7 +31,8 @@ CORS(app, resources={
             "http://localhost:3000",  # React default port
             "http://localhost:5173",  # Vite default port
             "http://127.0.0.1:3000",
-            "http://127.0.0.1:5173"
+            "http://127.0.0.1:5173",
+            "https://edu-hub-v1-f2ek.vercel.app"
         ],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
