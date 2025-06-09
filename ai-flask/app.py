@@ -550,20 +550,19 @@ app = Flask(__name__)
 CORS(app, resources={
     r"/*": {
         "origins": [
-            "http://localhost:3000",  # React default port
-            "http://localhost:5173",  # Vite default port
+            "http://localhost:3000",
+            "http://localhost:5173",
             "http://127.0.0.1:3000",
             "http://127.0.0.1:5173",
             "https://edu-hub-v1-f2ek.vercel.app",
-            "https://eduhub-v1-1.onrender.com/chat",
-            "https://*.onrender.com",  # Allow all Render subdomains
-            "https://*.vercel.app",    # Allow Vercel domains
-            # Add your actual frontend domain here
+            "https://edu-hub-v2.vercel.app",  # <--- ADD THIS
+            "https://eduhub-v1-1.onrender.com",  # <-- REMOVE `/chat`
         ],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
     }
 })
+
 
 # Set file upload limits for free tier
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
