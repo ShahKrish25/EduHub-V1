@@ -555,6 +555,7 @@ CORS(app, resources={
             "http://127.0.0.1:3000",
             "http://127.0.0.1:5173",
             "https://edu-hub-v1-f2ek.vercel.app",
+            "https://eduhub-v1-1.onrender.com/chat",
             "https://*.onrender.com",  # Allow all Render subdomains
             "https://*.vercel.app",    # Allow Vercel domains
             # Add your actual frontend domain here
