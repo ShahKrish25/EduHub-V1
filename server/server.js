@@ -46,7 +46,7 @@ app.get('/api/stats', auth, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'MONGO_URI=mongodb+srv://studyhub_user:StudyHub123@cluster0.j9nvm9u.mongodb.net/eduhub?retryWrites=true&w=majority&appName=Cluster0&maxPoolSize=10&serverSelectionTimeoutMS=5000&socketTimeoutMS=45000';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://studyhub_user:StudyHub123@cluster0.j9nvm9u.mongodb.net/eduhub?retryWrites=true&w=majority&appName=Cluster0&maxPoolSize=10&serverSelectionTimeoutMS=5000&socketTimeoutMS=45000';
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI, {
