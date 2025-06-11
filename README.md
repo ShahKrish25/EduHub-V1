@@ -10,6 +10,7 @@ EduHub is a full-stack web platform designed to provide semester-wise study reso
 |---------------|-----------------|-----|
 | 🎨 Frontend   | Vercel (vipkrish) | [https://edu-hub-v2.vercel.app](https://edu-hub-v2.vercel.app) |
 | 🔧 Backend    | Vercel (vipkrish) | [https://edu-hub-v1.vercel.app](https://edu-hub-v1.vercel.app) |
+| 🔧 Backend v2 *(**active**)*    | Render (kvshah) | [https://eduhub-v1.onrender.com](https://edu-hub-v1.vercel.app) |
 | 🤖 AI Server  | Render (kvshah)   | [https://eduhub-v1-1.onrender.com](https://eduhub-v1-1.onrender.com) |
 
 ---
@@ -30,18 +31,21 @@ EduHub is a full-stack web platform designed to provide semester-wise study reso
 
 ## ⚠️ Deployment Notes
 
-- **Render AI Server Sleep Timeout**:
-  - The AI server (Flask) hosted on Render sleeps after 15 minutes of inactivity.
-  - First request after a long gap may take **30–40 seconds**.
-  - If AI chat does not work, restart the Flask server from: [https://dashboard.render.com](https://dashboard.render.com)
+* **Render Server Sleep Timeout**:
 
-- **MongoDB / API Call Limits**:
-  - High traffic or multiple calls to MongoDB may temporarily cause **500 Internal Server Errors** on Vercel backend.
-  - These usually resolve after a refresh or short wait.
+  * Both the **backend** and **AI server** are hosted on **Render.com**, which puts free-tier services to sleep after 15 minutes of inactivity.
+  * The **first request after a long idle period** may take **30–40 seconds** to respond.
+  * To **keep the servers awake**, a **cron job** is configured using [UptimeRobot.com](https://uptimerobot.com) to send a simple `GET` request every **13 minutes**, preventing the servers from going idle.
 
-- **Groq API Key Expiry**:
-  - AI Chat uses Groq API for LLM inference.
-  - Please **renew the API key** if AI chat shows: `"invalid api key"` or fails to respond.
+* **MongoDB / API Call Limits**:
+
+  * Under high usage, calls to MongoDB may trigger **500 Internal Server Errors** on the backend.
+  * Usually resolved with a browser refresh or short wait.
+
+* **Groq API Key Expiry**:
+
+  * The AI Chat feature relies on the **Groq API** for LLM responses.
+  * If the chat stops working or shows `"invalid api key"`, the key may have expired and needs to be **renewed**.
 
 ---
 
@@ -53,8 +57,9 @@ EduHub is a full-stack web platform designed to provide semester-wise study reso
 - **File Uploads**: Multer (local storage)
 - **Authentication**: JWT-based secure login
 - **Hosting**:
-  - Vercel (frontend & backend)
-  - Render (AI server)
+  - Vercel (frontend)
+  - Render (AI server, backend)
+  - cron jobs (upTimeRobot)
 
 ---
 
