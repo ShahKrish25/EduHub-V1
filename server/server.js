@@ -58,7 +58,11 @@ mongoose.connect(MONGO_URI, {
   process.exit(1); // Exit on fail
 });
 
-  
+app.get('/health', (_, res)=>{
+  res.json({
+    status: "healthy"
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`running on http://${process.env.BACKEND_URL} on the port ${PORT} `);
