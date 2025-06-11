@@ -46,17 +46,24 @@ app.get('/api/stats', auth, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://studyhub_user:StudyHub123@cluster0.j9nvm9u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = process.env.MONGO_URI || 'MONGO_URI=mongodb+srv://studyhub_user:StudyHub123@cluster0.j9nvm9u.mongodb.net/eduhub?retryWrites=true&w=majority&appName=Cluster0&maxPoolSize=10&serverSelectionTimeoutMS=5000&socketTimeoutMS=45000';
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected ✅'))
-  .catch(err => console.log('MongoDB connection error ❌', err));
+  .catch(err => {
+  console.error('MongoDB connection error ❌', err);
+  process.exit(1); // Exit on fail
+});
 
   
 
 app.listen(PORT, () => {
   console.log(`running on http://${process.env.BACKEND_URL} on the port ${PORT} `);
+});
+
+process.on('unhandledRejection', err => {
+  console.error('Unhandled Rejection 💥:', err.message);
 });
