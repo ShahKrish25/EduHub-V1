@@ -38,6 +38,7 @@ import {
   BrainCircuit,
   ShieldUser,
   Rocket,
+  BotMessageSquareIcon,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "/components/ui/card";
 import { Button } from "/components/ui/button";
@@ -849,6 +850,19 @@ export default function StudentResourceHub() {
                         className="flex items-center"
                       >
                         Contribute Resources
+                      </Link>
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
+                    <BotMessageSquareIcon className="mr-2 h-4 w-4" />
+                    <span>
+                      <Link
+                        href="https://chat-pro-v1.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        ChatPro Playground
                       </Link>
                     </span>
                   </DropdownMenuItem>
