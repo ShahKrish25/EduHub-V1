@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const resourceRoutes = require("./routes/resource");
 const notificationRoutes = require('./routes/notification');
+const userRoutes = require('./routes/user');
 const auth = require('./middleware/auth.js');
 
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use("/api/resources", resourceRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/users', userRoutes);
 app.use('/uploads', express.static('uploads'));
 
 // Stats endpoint

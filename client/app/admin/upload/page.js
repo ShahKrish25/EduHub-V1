@@ -30,6 +30,7 @@ import {
   Users,
   BookOpenCheck,
   FileSpreadsheet,
+  LucideUsers,
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "/components/ui/avatar"
 import { Button } from "/components/ui/button"
@@ -381,12 +382,14 @@ export default function AdminUploadPage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
+            <a href="/">
             <div className="flex items-center gap-2">
               <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
                 <Brain className="h-6 w-6 text-white" />
               </div>
               <span className="text-2xl font-bold text-gray-900 dark:text-white">EduHub</span>
             </div>
+            </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4">
@@ -405,6 +408,15 @@ export default function AdminUploadPage() {
                 <span className="text-sm font-semibold text-gray-900 dark:text-white">ADMIN</span>
               </div>
               {/* notifications */}
+              <a href="/admin/users" target="_blank">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
+                <Avatar className=" h-8 w-8">
+                  <LucideUsers className="mt-1"/>
+                </Avatar>
+                <span className="text-sm font-semibold text-gray-900 dark:text-white">Students</span>
+              </div>
+                </a>
+                {/* notifications */}
               <a href="/admin/notifications" target="_blank">
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
                 <Avatar className=" h-8 w-8">

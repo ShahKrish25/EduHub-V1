@@ -245,12 +245,14 @@ export default function AdminNotificationsPage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
+            <a href="/">
             <div className="flex items-center gap-2">
               <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
                 <Brain className="h-6 w-6 text-white" />
               </div>
               <span className="text-2xl font-bold text-gray-900 dark:text-white">EduHub</span>
             </div>
+            </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4">

@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "/components/ui/card";
 import { Button } from "/components/ui/button"
-import { Youtube, FileText, BookOpen, Calendar, Mail, Upload, Send, CheckCircle, Heart, Star, Users, Sparkles, Target, Bell, Sun, Moon, ChevronDown, Menu, X, AlertCircle, Info, X as LucideX, Trash2, Brain, BrainCircuit, ShieldUser, User , LogOut} from 'lucide-react';
+import { Youtube, FileText, BookOpen, Calendar, Mail, Upload, Send, CheckCircle, Heart, Star, Users, Sparkles, Target, Bell, Sun, Moon, ChevronDown, Menu, X, AlertCircle, Info, X as LucideX, Trash2, Brain, BrainCircuit, ShieldUser, User , LogOut, BotMessageSquareIcon} from 'lucide-react';
 import { Input } from "/components/ui/input";
 import { Textarea } from "/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "/components/ui/select";
@@ -321,6 +321,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
+            <a href="/">
             <div className="flex items-center gap-2">
                <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
               <Brain className="h-6 w-6 text-white" />
@@ -329,6 +330,7 @@ export default function Home() {
                 EduHub
               </span>
             </div>
+            </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4">
@@ -474,6 +476,19 @@ export default function Home() {
                          className="flex items-center"
                       >
                         View Resources
+                      </Link>
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
+                    <BotMessageSquareIcon className="mr-2 h-4 w-4" />
+                    <span>
+                      <Link
+                        href="https://chat-pro-v1.vercel.app/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        ChatPro Playground
                       </Link>
                     </span>
                   </DropdownMenuItem>

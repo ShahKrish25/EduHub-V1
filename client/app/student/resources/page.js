@@ -39,6 +39,7 @@ import {
   ShieldUser,
   Rocket,
   BotMessageSquareIcon,
+  LucideScreenShare,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "/components/ui/card";
 import { Button } from "/components/ui/button";
@@ -841,7 +842,7 @@ export default function StudentResourceHub() {
                     </span>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
-                    <BrainCircuit className="mr-2 h-4 w-4" />
+                    <LucideScreenShare className="mr-2 h-4 w-4" />
                     <span>
                       <Link
                         href="/student/contribute"
