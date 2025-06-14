@@ -28,7 +28,7 @@ const loginUser = async (req, res) => {
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) return res.status(401).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user._id }, 'studyhub_token', { expiresIn: '1d' });
+    const token = jwt.sign({ id: user._id, role: user.role }, 'studyhub_token', { expiresIn: '1d' });
     res.status(200).json({ message: 'Login success ✅', token });
   } catch (err) {
     res.status(500).json({ error: err.message });
