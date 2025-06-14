@@ -981,7 +981,7 @@ export default function StudentResourceHub() {
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/95 via-purple-700/95 to-pink-600/95 dark:from-indigo-800/95 dark:via-purple-800/95 dark:to-pink-700/95" />
       <Meteors number={70} />
 
-        <div className="relative container mx-6 py-24">
+        <div className="relative container  py-24">
         
           <div className="text-center text-white">
             <div className="flex items-center justify-center gap-4 mb-8">

@@ -3,19 +3,6 @@ const Notification = require('../models/Notification');
 const auth = require('../middleware/auth.js');
 const router = express.Router();
 
-// Middleware to check if user is admin
-const isAdmin = async (req, res, next) => {
-  try {
-    console.log('User object in isAdmin middleware:', req.user);
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ error: 'Access denied. Admin privileges required.' });
-    }
-    next();
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 // Get all notifications for a user
 router.get('/', auth, async (req, res) => {
   try {
@@ -26,8 +13,8 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// Admin: Create a new notification
-router.post('/', [auth, isAdmin], async (req, res) => {
+// Create a new notification
+router.post('/', auth, async (req, res) => {
   try {
     const { title, message, type } = req.body;
     const notification = new Notification({
@@ -63,8 +50,8 @@ router.patch('/mark-all-read', auth, async (req, res) => {
   }
 });
 
-// Delete a notification (admin only)
-router.delete('/:id', [auth, isAdmin], async (req, res) => {
+// Delete a notification
+router.delete('/:id', auth, async (req, res) => {
   try {
     await Notification.findByIdAndDelete(req.params.id);
     res.json({ message: "Deleted" });

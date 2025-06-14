@@ -26,6 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.className} ${poppins.variable} ${roboto.variable} ${oxanium.variable}`}>
+    <meta name="viewport" content="width=device-width, user-scalable=no"></meta>
       <body>{children}</body>
     </html>
   );

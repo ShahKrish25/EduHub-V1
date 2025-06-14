@@ -22,7 +22,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 export default function EnhancedAiToolsPage() {
   dotenv.config();
   // ... keep existing code (state declarations and useEffect)
@@ -117,17 +117,26 @@ export default function EnhancedAiToolsPage() {
       selectedFiles.forEach((file) => formData.append("files", file));
       formData.append("session_id", sessionId);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_AI_SERVER}upload-files`, {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_AI_SERVER}upload-files`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const data = await res.json();
       if (data.processed_files) {
-        setUploadedFiles(data.processed_files);
+        setUploadedFiles(
+          data.processed_files.map((file) => ({
+            ...file,
+            size: Number(file.size), // Ensure size is a number
+            upload_time: file.upload_time,
+          }))
+        );
         setContextInfo({
           files: data.processed_files,
           total_size: data.processed_files.reduce(
-            (sum, f) => sum + (f.metadata?.size || 0),
+            (sum, f) => sum + Number(f.size || 0), // Use file.size, not file.metadata.size
             0
           ),
         });
@@ -149,11 +158,14 @@ export default function EnhancedAiToolsPage() {
     setSummary("");
     setSummaryError("");
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_AI_SERVER}summarize-content`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId, type: summaryType }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_AI_SERVER}summarize-content`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId, type: summaryType }),
+        }
+      );
       const data = await res.json();
       if (data.summary) {
         setSummary(data.summary);
@@ -225,13 +237,12 @@ export default function EnhancedAiToolsPage() {
           updated[updated.length - 1] = { sender: "ai", text: fullText };
           return updated;
         });
-      
+
         // Scroll as new content streams in
         setTimeout(() => {
           chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
         }, 0);
       }
-      
     } catch {
       setChatMessages((msgs) => [
         ...msgs,
@@ -250,6 +261,7 @@ export default function EnhancedAiToolsPage() {
   };
 
   const formatFileSize = (bytes) => {
+    if (typeof bytes !== "number" || isNaN(bytes) || bytes < 0) return "0 B"; // Fallback for invalid sizes
     if (bytes < 1024) return bytes + " B";
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
@@ -290,12 +302,12 @@ export default function EnhancedAiToolsPage() {
       >
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
           <a href="/">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
-              <Brain className="h-6 w-6 text-white" />
+            <div className="flex items-center gap-2">
+              <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold">EduHub</h1>
             </div>
-            <h1 className="text-2xl font-bold">EduHub</h1>
-          </div>
           </a>
           <button
             onClick={toggleTheme}
@@ -321,13 +333,13 @@ export default function EnhancedAiToolsPage() {
       </div>
 
       <div
-        className={`max-w-7xl mx-auto px-4 py-8 space-y-8 ${
+        className={`max-w-[100lvw] mx-auto md:px-4 md:py-8 md:space-y-8 px-2 py-2 ${
           maxChat || maxSummary ? "hidden" : ""
         }`}
       >
         {/* Context Info Bar */}
         {contextInfo && contextInfo.files.length > 0 && (
-          <div className="bg-gradient-to-r from-emerald-500/10 to-blue-500/10 backdrop-blur-sm rounded-2xl p-6 border border-emerald-200/50 dark:border-emerald-800/50">
+          <div className="bg-gradient-to-r from-emerald-500/10 to-blue-500/10 backdrop-blur-sm rounded-2xl p-6 border border-emerald-200/50 dark:border-emerald-800/50 md:mb-0 mb-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="p-2 bg-emerald-500/20 rounded-xl">
@@ -358,7 +370,7 @@ export default function EnhancedAiToolsPage() {
           {/* Left Column - File Upload & Summary */}
           <div className="space-y-8">
             {/* ... keep existing code (File Upload Section) */}
-            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20 dark:border-gray-800/40">
+            <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-3xl shadow-xl p-2 md:p-8 border border-white/20 dark:border-gray-800/40">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl">
                   <Upload className="h-6 w-6 text-white" />
@@ -475,9 +487,14 @@ export default function EnhancedAiToolsPage() {
                                 </p>
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
                                   {formatFileSize(file.size)} •{" "}
-                                  {new Date(
-                                    file.upload_time
-                                  ).toLocaleTimeString()}
+                                  {new Date(file.upload_time).toLocaleString(
+                                    "en-US",
+                                    {
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                      hour12: true,
+                                    }
+                                  )}
                                 </p>
                               </div>
                             </div>
@@ -498,7 +515,7 @@ export default function EnhancedAiToolsPage() {
 
             {/* Smart Summary Section */}
             {uploadedFiles.length > 0 && !maxSummary && (
-              <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20 dark:border-gray-800/40">
+              <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-3xl shadow-xl p-2 py-5 md:p-8 border border-white/20 dark:border-gray-800/40">
                 <button
                   onClick={() => setMaxSummary(true)}
                   className="absolute top-4 right-4 z-10 p-2 bg-gray-100 dark:bg-gray-800 rounded-full shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition"
@@ -507,11 +524,11 @@ export default function EnhancedAiToolsPage() {
                   <Maximize2 className="h-5 w-5" />
                 </button>
                 {/* ... keep existing code (Summary content) */}
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-6 md:px-0 px-3">
                   <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl">
-                    <Sparkles className="h-6 w-6 text-white" />
+                    <Sparkles className="md:h-6 md:w-6 h-4 w-4 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  <h2 className="md:text-2xl text-xl font-bold text-gray-800 dark:text-gray-100">
                     Smart Summary
                   </h2>
                 </div>
@@ -552,7 +569,7 @@ export default function EnhancedAiToolsPage() {
 
                   {/* Summary Display */}
                   {summary && (
-                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-6 border border-purple-200 dark:border-purple-800 max-h-96 overflow-y-auto">
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-6 border border-purple-200 dark:border-purple-800 max-h-96 overflow-y-auto prose max-w-none break-words whitespace-pre-wrap text-sm sm:text-base">
                       <div className="prose max-w-none">
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
@@ -644,24 +661,24 @@ export default function EnhancedAiToolsPage() {
                 <Maximize2 className="h-5 w-5" />
               )}
             </button>
-            <div className="flex items-center gap-3 p-8 pb-6">
+            <div className="flex items-center gap-3 md:p-8 md:pb-6 p-6">
               <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl">
-                <MessageCircle className="h-6 w-6 text-white" />
+                <MessageCircle className="md:h-6 md:w-6 h-4 w-4 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              <h2 className="md:text-2xl text-xl font-bold text-gray-800 dark:text-gray-100">
                 AI Chat
               </h2>
             </div>
 
             {/* Chat Messages */}
-            <div className="flex-1 px-8 pb-6">
+            <div className="flex-1 md:px-8 md:pb-6 px-1 pb-2">
               <div
-                className={`bg-gray-50/80 dark:bg-gray-800/50 rounded-2xl p-4 overflow-y-auto ${
-                  maxChat ? "h-[calc(100vh-240px)]" : "h-96"
+                className={`bg-gray-50/80 dark:bg-gray-800/50 rounded-2xl p-1 px-2 overflow-y-auto ${
+                  maxChat ? "h-[calc(100vh-240px)]" : "md:h-96 h-[80vh]"
                 }`}
               >
                 {/* ... keep existing code (chat messages rendering) */}
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {chatMessages.map((msg, idx) => (
                     <div
                       key={idx}
@@ -670,10 +687,10 @@ export default function EnhancedAiToolsPage() {
                       }`}
                     >
                       <div
-                        className={`max-w-[85%] ${
+                        className={`max-w-[99%] ${
                           msg.sender === "user"
                             ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-2xl rounded-br-md px-4 py-3"
-                            : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm"
+                            : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md md:px-2 px-2 py-2 shadow-sm"
                         }`}
                       >
                         {msg.sender === "ai" ? (
@@ -885,7 +902,7 @@ export default function EnhancedAiToolsPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center">
+        <div className="text-center mt-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full border border-white/20 dark:border-gray-700/40">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-sm text-gray-600 dark:text-gray-300">
@@ -904,9 +921,9 @@ export default function EnhancedAiToolsPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl">
-                    <MessageCircle className="h-6 w-6 text-white" />
+                    <MessageCircle className="md:h-6 md:w-6 h-4 w-4 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                  <h2 className="md:text-2xl text-xl font-bold text-gray-800 dark:text-gray-100">
                     AI Chat
                   </h2>
                 </div>
@@ -921,9 +938,9 @@ export default function EnhancedAiToolsPage() {
             </div>
 
             {/* Chat Content - Fixed height container */}
-            <div className="flex-1 p-6 flex flex-col min-h-0">
+            <div className="flex-1 p-2 md:p-6 flex flex-col min-h-0">
               {/* Messages Container - Scrollable */}
-              <div className="bg-gray-50/80 dark:bg-gray-800/50 rounded-2xl p-4 flex-1 overflow-y-auto mb-4">
+              <div className="bg-gray-50/80 dark:bg-gray-800/50 rounded-2xl md:p-4 p-2 flex-1 overflow-y-auto mb-4">
                 {/* ... keep existing code (chat messages rendering for maximized view) */}
                 <div className="space-y-4">
                   {chatMessages.map((msg, idx) => (
@@ -934,15 +951,15 @@ export default function EnhancedAiToolsPage() {
                       }`}
                     >
                       <div
-                        className={`max-w-[85%] ${
+                        className={`max-w-[99%] sm:max-w-[85%] ${
                           msg.sender === "user"
-                            ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-2xl rounded-br-md px-4 py-3"
-                            : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm"
+                            ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-2xl rounded-br-md px-2 py-2 md:px-4 md:py-3"
+                            : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-bl-md px-2 py-3 shadow-sm"
                         }`}
                       >
                         {msg.sender === "ai" ? (
                           <div className="flex gap-3">
-                            <div className="flex-shrink-0 mt-1">
+                            <div className="flex-shrink-0 mt-1 flex md:block">
                               <div className="p-1.5 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg">
                                 <Bot className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                               </div>
@@ -1172,7 +1189,7 @@ export default function EnhancedAiToolsPage() {
             </div>
 
             {/* Summary Content - Fixed height container */}
-            <div className="flex-1 p-6 flex flex-col min-h-0">
+            <div className="flex-1 p-2 md:p-6 flex flex-col min-h-0">
               {/* Summary Controls - Fixed at top */}
               <div className="flex flex-col sm:flex-row gap-4 mb-4 flex-shrink-0">
                 <select
@@ -1206,7 +1223,7 @@ export default function EnhancedAiToolsPage() {
 
               {/* Summary Display - Scrollable */}
               {summary && (
-                <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-6 border border-purple-200 dark:border-purple-800 flex-1 overflow-y-auto">
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-6 border border-purple-200 dark:border-purple-800 flex-1 overflow-y-auto prose max-w-none break-words whitespace-pre-wrap text-sm sm:text-base">
                   <div className="prose max-w-none">
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
