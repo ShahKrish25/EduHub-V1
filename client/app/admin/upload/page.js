@@ -386,6 +386,7 @@ export default function AdminUploadPage() {
       }
       if (editResource.newFile) {
         formData.append("file", editResource.newFile)
+        
       }
 
       // const res = await fetch(`http://localhost:5000/api/resources/${editResource._id}`, {
@@ -1158,29 +1159,28 @@ export default function AdminUploadPage() {
                               </p>
                             )}
                             <div className="flex flex-wrap gap-2 text-sm text-gray-500 dark:text-gray-400">
-                              {resource.link && (
-                                <a
-                                  href={resource.link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
-                                >
-                                  <ExternalLink className="h-4 w-4" />
-                                  View Link
-                                </a>
-                              )}
-                              {resource.fileUrl && (
-                                <a
-                                  // href={`http://localhost:5000/${resource.fileUrl}`}
-                                  href={`https://${process.env.NEXT_PUBLIC_BACKEND_URL}${resource.fileUrl}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400"
-                                >
-                                  <FileText className="h-4 w-4" />
-                                  View File
-                                </a>
-                              )}
+                              <a
+                                href={resource.link || undefined}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`flex items-center gap-1 ${resource.link ? 'hover:text-blue-600 dark:hover:text-blue-400' : 'opacity-50 cursor-not-allowed pointer-events-none'}`}
+                                tabIndex={resource.link ? 0 : -1}
+                                aria-disabled={!resource.link}
+                              >
+                                <ExternalLink className="h-4 w-4" />
+                                View Link
+                              </a>
+                              <a
+                                href={resource.fileUrl || undefined}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`flex items-center gap-1 ${resource.fileUrl ? 'hover:text-blue-600 dark:hover:text-blue-400' : 'opacity-50 cursor-not-allowed pointer-events-none'}`}
+                                tabIndex={resource.fileUrl ? 0 : -1}
+                                aria-disabled={!resource.fileUrl}
+                              >
+                                <FileText className="h-4 w-4" />
+                                View File
+                              </a>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">

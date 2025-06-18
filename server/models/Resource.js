@@ -8,11 +8,12 @@ const resourceSchema = new mongoose.Schema({
   title: { type: String, required: true },
   type: { 
     type: String, 
-    enum: ["youtube", "handwritten", "pdf", "pyq", "solution", "timetable"], 
+    enum: ["youtube", "handwritten", "pdf", "doc", "ppt", "txt", "pyq", "solution", "timetable"], 
     required: true 
   },
   link: { type: String }, // For YouTube or PDFs
   fileUrl: { type: String }, // For uploaded files
+  cloudinaryId: { type: String }, // For Cloudinary file ID
   tableData: { // For timetable table format
     headers: [String],
     rows: [[String]]

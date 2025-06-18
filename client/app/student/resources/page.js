@@ -458,53 +458,57 @@ export default function StudentResourceHub() {
                 </Button>
               </>
             )}
-            {(type === "notes" ||
-              type === "handwritten" ||
-              type === "pyq" ||
-              type === "solutions") &&
-              item.fileUrl && (
-                <>
-                  <Button
-                    onClick={() =>
-                      openPreview(
-                        "pdf",
-                        `${process.env.NEXT_PUBLIC_BACKEND_URL}${item.fileUrl}`,
-                        item.title
-                      )
-                    }
-                    size="sm"
-                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
-                  >
-                    <Eye className="h-4 w-4 mr-1" />
-                    Preview
-                  </Button>
+            {(type === "notes" || type === "handwritten" || type === "pyq" || type === "solutions") && (
+              <>
+                {item.fileUrl && (
+                  <>
+                    {item.link && (
+                      <Button
+                        asChild
+                        size="sm"
+                        variant="outline"
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                      >
+                        <a href={item.link} target="_blank" rel="noreferrer">
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          Open Resource
+                        </a>
+                      </Button>
+                    )}
+                    <Button
+                      onClick={() => openPreview("pdf", `${item.fileUrl}`, item.title)}
+                      size="sm"
+                      className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      Preview
+                    </Button>
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                      className="hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900 dark:hover:text-green-400"
+                    >
+                      <a target="_blank" href={`${item.fileUrl}`} download>
+                        <Download className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  </>
+                )}
+                {item.link && !item.fileUrl && (
                   <Button
                     asChild
                     size="sm"
                     variant="outline"
-                    className="hover:bg-green-50 hover:text-green-600 dark:hover:bg-green-900 dark:hover:text-green-400"
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
                   >
-                    <a
-                      target="_blank"
-                      href={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.fileUrl}`}
-                      download
-                    >
-                      <Download className="h-4 w-4" />
+                    <a href={item.link} target="_blank" rel="noreferrer">
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      Open Resource
                     </a>
                   </Button>
-                </>
-              )}
-            {item.fileUrl && type !== "youtube" && (
-              <Button
-                asChild
-                size="sm"
-                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
-              >
-                <a href={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.fileUrl}`} target="_blank" rel="noreferrer">
-                  <Eye className="h-4 w-4 mr-1" />
-                  View
-                </a>
-              </Button>
+                )}
+              </>
             )}
           </div>
         </CardContent>
@@ -1326,7 +1330,7 @@ export default function StudentResourceHub() {
                                 >
                                   <a
                                     target="_blank"
-                                    href={`${process.env.NEXT_PUBLIC_BACKEND_URL}${tt.fileUrl}`}
+                                    href={`${tt.fileUrl}`}
                                     download
                                   >
                                     <Download className="h-4 w-4 mr-1" />{" "}
