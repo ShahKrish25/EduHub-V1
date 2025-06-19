@@ -15,7 +15,7 @@ const app = express();
 app.use(cors({
   origin: ['http://localhost:3000','http://localhost:5000', 'https://edu-hub-v1.vercel.app', 'https://edu-hub-v1-f2ek.vercel.app', 'https://eduhub-v1.onrender.com', 'https://edu-hub-v2.vercel.app'],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
 }));
 app.use(express.json());
 app.use('/api/auth', authRoutes);

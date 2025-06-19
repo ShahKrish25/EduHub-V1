@@ -23,6 +23,7 @@ import {
   Star,
   Zap,
   Shield,
+  Webhook,
 } from "lucide-react"
 import { Button } from "/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "/components/ui/card"
@@ -379,7 +380,7 @@ export default function SignupPage() {
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
-                <Brain className="h-10 w-10 text-white" />
+                <Webhook className="h-10 w-10 text-white" />
               </div>
               <h1 className="text-4xl font-bold">EduHub</h1>
             </div>

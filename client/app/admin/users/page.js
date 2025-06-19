@@ -17,6 +17,7 @@ import {
   KeyRound,
   Mail,
   LucideUsers,
+  Webhook,
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "/components/ui/avatar"
 import { Button } from "/components/ui/button"
@@ -37,6 +38,9 @@ import {
 } from "/components/ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import { Badge } from "/components/ui/badge"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "/components/ui/select"
+import Footer from "/components/ui/footer"
+import Link from "next/link"
 
 export default function AdminManageUsersPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -282,14 +286,16 @@ export default function AdminManageUsersPage() {
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-16">
                 {/* Logo */}
-                <a href="/">
+                {/* <a href="/"> */}
+                <Link href={"/"}>
                 <div className="flex items-center gap-2">
-                  <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
-                    <Brain className="h-6 w-6 text-white" />
+                  <div className="p-2 bg-gradient-to-r from-violet-600  to-slate-600 rounded-xl">
+                    <Webhook className="h-6 w-6 text-white" />
                   </div>
                   <span className="text-2xl font-bold text-gray-900 dark:text-white">EduHub</span>
                 </div>
-                </a>
+                </Link>
+                {/* </a> */}
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center gap-4">
@@ -299,7 +305,8 @@ export default function AdminManageUsersPage() {
                   </Button>
 
                   {/* Admin Profile */}
-                  <a href="/admin/upload">
+                  {/* <a href="/admin/upload"> */}
+                  <Link href={"/admin/upload"}>
                   <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700">
                     <Avatar className="h-8 w-8">
                       <AvatarFallback className="bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold">
@@ -308,25 +315,31 @@ export default function AdminManageUsersPage() {
                     </Avatar>
                     <span className="text-sm font-semibold text-gray-900 dark:text-white">ADMIN</span>
                   </div>
-                  </a>
-                  {/* notifications */}
+                  </Link>
+                  {/* </a> */}
+                  
                   <a href="/admin/users">
+                  {/* <Link href={"users"}> */}
                   <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
                     <Avatar className=" h-8 w-8">
                       <LucideUsers className="mt-1"/>
                     </Avatar>
                     <span className="text-sm font-semibold text-gray-900 dark:text-white">Students</span>
                   </div>
+                  {/* </Link> */}
                   </a>
+
                   {/* notifications */}
-                  <a href="/admin/notifications" target="_blank" rel="noreferrer">
+                  {/* <a href="/admin/notifications" target="_blank" rel="noreferrer"> */}
+                  <Link href={"notifications"}>
                   <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
                     <Avatar className=" h-8 w-8">
                       <BellPlus className="mt-1"/>
                     </Avatar>
                     <span className="text-sm font-semibold text-gray-900 dark:text-white">Notifications</span>
                   </div>
-                  </a>
+                  </Link>
+                  {/* </a> */}
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -339,6 +352,7 @@ export default function AdminManageUsersPage() {
               {mobileMenuOpen && (
                 <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4">
                   <div className="flex flex-col space-y-3">
+                  <a href="/admin/upload/">
                     <div className="flex items-center gap-3 px-3 py-2">
                       <Avatar className="h-10 w-10">
                         <AvatarFallback className="bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold">
@@ -350,6 +364,27 @@ export default function AdminManageUsersPage() {
                         <p className="text-xs text-gray-500 dark:text-gray-400">Administrator</p>
                       </div>
                     </div>
+                    </a>
+
+                    <a href="/admin/users">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
+                    <Avatar className=" h-8 w-8">
+                      <LucideUsers className="mt-1"/>
+                    </Avatar>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">Students</span>
+                  </div>
+                  </a>
+                  {/* notifications */}
+                  <a href="/admin/notifications" target="_parent" rel="noreferrer">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
+                    <Avatar className=" h-8 w-8">
+                      <BellPlus className="mt-1"/>
+                    </Avatar>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">Notifications</span>
+                  </div>
+                  </a>
+
+
                     <Button variant="ghost" className="justify-start" onClick={toggleDarkMode}>
                       {darkMode ? <Sun className="mr-2 h-4 w-4 text-yellow-400" /> : <Moon className="mr-2 h-4 w-4" />}
                       {darkMode ? "Light Mode" : "Dark Mode"}
@@ -399,6 +434,22 @@ export default function AdminManageUsersPage() {
                 </div>
               )}
 
+              {/* Stats Section */}
+              <div className="flex flex-row sm:flex-row gap-3 justify-center items-center mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-3 flex flex-col items-center min-w-[110px]">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Total Users</span>
+                  <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{users.length}</span>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-3 flex flex-col items-center min-w-[110px]">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Admins</span>
+                  <span className="text-xl font-bold text-purple-600 dark:text-purple-400">{users.filter(u => u.role === 'admin').length}</span>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-3 flex flex-col items-center min-w-[110px]">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Students</span>
+                  <span className="text-xl font-bold text-green-600 dark:text-green-400">{users.filter(u => u.role === 'student').length}</span>
+                </div>
+              </div>
+
               {/* Users List Section */}
               <div className="bg-white dark:bg-gray-700 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-900 p-6 border-b border-gray-200 dark:border-gray-700">
@@ -435,22 +486,73 @@ export default function AdminManageUsersPage() {
                             </div>
                           </CardHeader>
                           <CardContent className="pt-2">
-                            <div className="flex justify-end gap-2">
+                            <div className="flex flex-col gap-3 md:flex-row md:justify-end md:items-center">
+                              <div className="flex flex-row gap-2 w-full md:w-auto justify-between">
+                                <Select 
+                                  value={user.role}
+                                  onValueChange={async (newRole) => {
+                                    if (newRole === user.role) return;
+                                    setIsLoadingUsers(true);
+                                    try {
+                                      const token = localStorage.getItem("studyhub_token");
+                                      if (!token) {
+                                        router.push("/login");
+                                        return;
+                                      }
+                                      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/users/${user._id}/role`, {
+                                        method: 'PUT',
+                                        headers: {
+                                          Authorization: `Bearer ${token}`,
+                                          'Content-Type': 'application/json',
+                                          Accept: 'application/json',
+                                        },
+                                        body: JSON.stringify({ role: newRole })
+                                      });
+                                      if (!response.ok) {
+                                        if (response.status === 401) {
+                                          localStorage.removeItem("studyhub_token");
+                                          router.push("/login");
+                                          return;
+                                        }
+                                        throw new Error('Failed to update role');
+                                      }
+                                      setMessage(`Role for ${user.username} updated to ${newRole}!`);
+                                      setMessageType("success");
+                                      await fetchUsers();
+                                    } catch (error) {
+                                      setMessage("Error updating role");
+                                      setMessageType("error");
+                                    } finally {
+                                      setIsLoadingUsers(false);
+                                    }
+                                  }}
+                                >
+                                  <SelectTrigger className="w-[120px] dark:hover:bg-blue-800/20 ">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent className= "dark:bg-slate-800">
+                                    <SelectItem value="student">Student</SelectItem>
+                                    <SelectItem value="admin">Admin</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              {/* </div> */}
                               <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleEditPasswordClick(user)}
-                                className="hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                className="hover:bg-blue-50 dark:hover:bg-blue-800/20 h-auto"
                               >
                                 <Edit className="h-4 w-4 mr-2" />
                                 Edit Password
                               </Button>
+                              </div>
+                              <div className="flex justify-center md:justify-end w-full">
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    className="hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
+                                    className="hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 w-full md:w-auto"
                                   >
                                     <Trash2 className="h-4 w-4 mr-2" />
                                     Delete
@@ -472,6 +574,7 @@ export default function AdminManageUsersPage() {
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>
+                            </div>
                             </div>
                           </CardContent>
                         </Card>
@@ -544,9 +647,7 @@ export default function AdminManageUsersPage() {
               </Dialog>
             )}
 
-            <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
-              <p className="text-gray-500 dark:text-gray-400">© {new Date().getFullYear()} EduHub. All rights reserved.</p>
-            </footer>
+            <Footer />
           </div>
         </>
       )}

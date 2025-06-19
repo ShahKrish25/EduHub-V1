@@ -17,10 +17,13 @@ import {
   Menu,
   Moon,
   Sun,
+  Webhook,
 } from "lucide-react"
+import Footer from "/components/ui/footer"
 import { useRouter } from "next/navigation"
 import { Avatar, AvatarFallback } from "/components/ui/avatar"
 import { Button } from "/components/ui/button"
+import Link from "next/link"
 const dotenv = require('dotenv');
 
 export default function AdminNotificationsPage() {
@@ -301,14 +304,16 @@ export default function AdminNotificationsPage() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <a href="/">
+            {/* <a href="/"> */}
+            <Link href={"/"} >
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
-                <Brain className="h-6 w-6 text-white" />
+              <div className="p-2 bg-gradient-to-r from-violet-600  to-slate-600 rounded-xl">
+                <Webhook className="h-6 w-6 text-white" />
               </div>
               <span className="text-2xl font-bold text-gray-900 dark:text-white">EduHub</span>
             </div>
-            </a>
+            </Link>
+            {/* </a> */}
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4">
@@ -318,7 +323,8 @@ export default function AdminNotificationsPage() {
               </Button>
 
               {/* Admin Profile */}
-              <a href="/admin/upload" target="_blank">
+              {/* <a href="/admin/upload" target="_blank"> */}
+              <Link href={"/admin/upload"} >
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700">
                 <Avatar className="h-8 w-8">
                   <AvatarFallback className="bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold">
@@ -327,7 +333,8 @@ export default function AdminNotificationsPage() {
                 </Avatar>
                 <span className="text-sm font-semibold text-gray-900 dark:text-white">ADMIN</span>
               </div>
-              </a>
+              </Link>
+              {/* </a> */}
             </div>
 
             {/* Mobile Menu Button */}
@@ -340,6 +347,7 @@ export default function AdminNotificationsPage() {
           {mobileMenuOpen && (
             <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4">
               <div className="flex flex-col space-y-3">
+              <Link href={"/admin/upload"} >
                 <div className="flex items-center gap-3 px-3 py-2">
                   <Avatar className="h-10 w-10">
                     <AvatarFallback className="bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold">
@@ -351,6 +359,7 @@ export default function AdminNotificationsPage() {
                     <p className="text-xs text-gray-500 dark:text-gray-400">Administrator</p>
                   </div>
                 </div>
+                </Link>
                 <Button variant="ghost" className="justify-start" onClick={toggleDarkMode}>
                   {darkMode ? <Sun className="mr-2 h-4 w-4 text-yellow-400" /> : <Moon className="mr-2 h-4 w-4" />}
                   {darkMode ? "Light Mode" : "Dark Mode"}
@@ -595,11 +604,12 @@ export default function AdminNotificationsPage() {
           </div>
         </div>
       </div>
-      <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
+      {/* <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} EduHub. All rights reserved.
         </p>
-      </footer>
+      </footer> */}
+        <Footer />
     </div>
   )
 }

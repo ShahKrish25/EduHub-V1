@@ -18,10 +18,13 @@ import {
   Minimize2,
   Sun,
   Moon,
+  Webhook,
 } from "lucide-react";
+import Footer from "/components/ui/footer"
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
+import Link from "next/link";
 const dotenv = require("dotenv");
 export default function EnhancedAiToolsPage() {
   dotenv.config();
@@ -301,14 +304,16 @@ export default function EnhancedAiToolsPage() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-          <a href="/">
+          {/* <a href="/"> */}
+          <Link href={"/"}>
             <div className="flex items-center gap-2">
-              <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
-                <Brain className="h-6 w-6 text-white" />
+              <div className="p-2 bg-gradient-to-r from-violet-600  to-slate-600 rounded-xl">
+                <Webhook className="h-6 w-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold">EduHub</h1>
             </div>
-          </a>
+            </Link>
+          {/* </a> */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
@@ -1333,11 +1338,12 @@ export default function EnhancedAiToolsPage() {
         }
       `}</style>
 
-      <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
+      {/* <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} EduHub. All rights reserved.
         </p>
-      </footer>
+      </footer> */}
+      <Footer />
     </div>
   );
 }

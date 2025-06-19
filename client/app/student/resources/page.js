@@ -27,6 +27,7 @@ import {
   ChevronDown,
   Settings,
   Bell,
+  BellRing,
   Menu,
   X,
   CheckCircle,
@@ -40,7 +41,13 @@ import {
   Rocket,
   BotMessageSquareIcon,
   LucideScreenShare,
+  FlameIcon,
+  UserSquare2,
+  GitBranchIcon,
+  BookmarkPlus,
+  Webhook,
 } from "lucide-react";
+import Footer from "/components/ui/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "/components/ui/card";
 import { Button } from "/components/ui/button";
 import { Badge } from "/components/ui/badge";
@@ -58,7 +65,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "/components/ui/avatar";
 import Link from "next/link";
 import { TextGenerateEffect } from "/app/ui/text-generate-effect";
 import { Meteors } from "/app/ui/meteors";
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 export default function StudentResourceHub() {
   dotenv.config();
   const [user, setUser] = useState(null);
@@ -230,6 +237,7 @@ export default function StudentResourceHub() {
         setUser({
           name: data.username, // Map username to name for the UI
           email: data.email,
+          role: data.role,
         });
       })
       .catch((error) => {
@@ -238,6 +246,7 @@ export default function StudentResourceHub() {
         window.location.href = "/login";
       });
   }, []);
+  // console.log(user.role);
 
   // Fetch notifications
   useEffect(() => {
@@ -262,7 +271,9 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources?branch=${encodeURIComponent(
+      `${
+        process.env.NEXT_PUBLIC_BACKEND_URL
+      }api/resources?branch=${encodeURIComponent(
         branch
       )}&semester=${encodeURIComponent(semester)}&type=timetable`,
       {
@@ -299,7 +310,9 @@ export default function StudentResourceHub() {
     try {
       const token = localStorage.getItem("studyhub_token");
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}api/resources?branch=${encodeURIComponent(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        }api/resources?branch=${encodeURIComponent(
           branch
         )}&semester=${encodeURIComponent(
           semester
@@ -458,7 +471,10 @@ export default function StudentResourceHub() {
                 </Button>
               </>
             )}
-            {(type === "notes" || type === "handwritten" || type === "pyq" || type === "solutions") && (
+            {(type === "notes" ||
+              type === "handwritten" ||
+              type === "pyq" ||
+              type === "solutions") && (
               <>
                 {item.fileUrl && (
                   <>
@@ -476,7 +492,9 @@ export default function StudentResourceHub() {
                       </Button>
                     )}
                     <Button
-                      onClick={() => openPreview("pdf", `${item.fileUrl}`, item.title)}
+                      onClick={() =>
+                        openPreview("pdf", `${item.fileUrl}`, item.title)
+                      }
                       size="sm"
                       className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
                     >
@@ -578,16 +596,19 @@ export default function StudentResourceHub() {
       )}
     </div>
   );
-
+  console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/mark-all-read`);
   // Mark all notifications as read
   const markAllNotificationsRead = async () => {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/mark-all-read`, {
-      method: "PATCH",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/mark-all-read`,
+      {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     fetchNotifications();
     setNotifLoading(false);
   };
@@ -597,10 +618,13 @@ export default function StudentResourceHub() {
     const token = localStorage.getItem("studyhub_token");
     if (!token) return;
     setNotifLoading(true);
-    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/notifications/${id}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     fetchNotifications();
     setNotifLoading(false);
   };
@@ -649,20 +673,17 @@ export default function StudentResourceHub() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
       {/* Navigation Header */}
+      {/* Navigation Header */}
       <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              {/* <Sparkles className="h-8 w-8 text-blue-600" />
-               */}
-              <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
-                <Brain className="h-6 w-6 text-white" />
+              <div className="p-2 bg-gradient-to-r from-violet-600 to-slate-600 rounded-xl">
+                <Webhook className="h-6 w-6 text-white" />
               </div>
               <span className="text-2xl font-bold dark:text-zinc-300 text-gray-700 cursor-pointer">
-              <a href="/">
-               EduHub
-              </a>
+                <Link href={"/"}> EduHub</Link>
               </span>
             </div>
 
@@ -677,7 +698,7 @@ export default function StudentResourceHub() {
                   aria-label="Show notifications"
                   onClick={() => setShowNotifications((v) => !v)}
                 >
-                  <Bell className="h-5 w-5" />
+                  <BellRing className="h-5 w-5" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold border-2 border-white dark:border-gray-900">
                       {unreadCount}
@@ -707,10 +728,10 @@ export default function StudentResourceHub() {
                       Mark all as read
                     </button>
                   </div>
-                  <div className="max-h-96 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800 p-2 sm:p-3">
+                  <div className="max-h-64 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800 p-2 sm:p-3">
                     {notifications.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-10 text-gray-400 dark:text-gray-500">
-                        <Bell className="h-10 w-10 mb-2" />
+                        <BellRing className="h-10 w-10 mb-2" />
                         <span className="text-base">No notifications yet</span>
                       </div>
                     ) : (
@@ -752,7 +773,7 @@ export default function StudentResourceHub() {
                               {new Date(n.createdAt).toLocaleString()}
                             </div>
                           </div>
-                          <button
+                          {/* <button
                             className="ml-2 p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition-colors"
                             aria-label="Delete notification"
                             onClick={(e) => {
@@ -762,7 +783,7 @@ export default function StudentResourceHub() {
                             disabled={notifLoading}
                           >
                             <LucideX className="h-4 w-4 text-red-500" />
-                          </button>
+                          </button> */}
                         </div>
                       ))
                     )}
@@ -786,7 +807,6 @@ export default function StudentResourceHub() {
                     className="flex items-center gap-2 px-3"
                   >
                     <Avatar className="h-8 w-8">
-                      {/* <AvatarImage src={"/placeholder.svg"} alt={user.name} /> */}
                       {user ? (
                         <AvatarImage
                           src={`${process.env.NEXT_PUBLIC_BACKEND_URL}placeholder.svg`}
@@ -821,8 +841,16 @@ export default function StudentResourceHub() {
                   align="end"
                   className="w-56 dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <DropdownMenuLabel className="dark:text-white">
-                    My Account
+                  <DropdownMenuLabel className="dark:text-white flex items-center gap-3">
+                    {user.role === "admin" ? (
+                      <>
+                        <ShieldUser /> Administer
+                      </>
+                    ) : (
+                      <>
+                        <UserSquare2 /> Student Profile
+                      </>
+                    )}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="dark:bg-gray-700" />
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
@@ -836,13 +864,15 @@ export default function StudentResourceHub() {
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
                     <BrainCircuit className="mr-2 h-4 w-4" />
                     <span>
-                      <a
+                      {/* <a
                         target="_blank"
                         rel="noopener noreferrer"
                         href="/ai-tools"
-                      >
-                        Context Aware Ai{" "}
-                      </a>
+                      > */}
+                      <Link href={"/ai-tools"} >
+                        Context Aware Ai
+                      {/* </a> */}
+                      </Link>
                     </span>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
@@ -850,8 +880,6 @@ export default function StudentResourceHub() {
                     <span>
                       <Link
                         href="/student/contribute"
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="flex items-center"
                       >
                         Contribute Resources
@@ -874,13 +902,15 @@ export default function StudentResourceHub() {
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
                     <ShieldUser className="mr-2 h-4 w-4" />
                     <span>
-                      <a
+                      {/* <a
                         target="_blank"
                         rel="noopener noreferrer"
                         href="/admin/upload"
-                      >
+                      > */}
+                      <Link href={"/admin/upload"} target="_blank">
                         Admin
-                      </a>
+                      {/* </a> */}
+                    </Link>
                     </span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="dark:bg-gray-700" />
@@ -895,35 +925,65 @@ export default function StudentResourceHub() {
               </DropdownMenu>
             </div>
 
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </Button>
+            {/* Mobile Navigation Buttons */}
+            <div className="flex items-center gap-2 md:hidden pointer-events-none">
+              <div className="pointer-events-auto">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="relative z-10 pointer-events-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  aria-label="Show notifications"
+                  onClick={() => {
+                    console.log(
+                      "Mobile notifications button clicked, current showNotifications:",
+                      showNotifications
+                    );
+                    setMobileMenuOpen(false); // Close mobile menu to avoid overlap
+                    setShowNotifications((v) => !v);
+                  }}
+                  onTouchStart={() => {
+                    console.log("Mobile notifications button touched");
+                    setMobileMenuOpen(false);
+                    setShowNotifications((v) => !v);
+                  }}
+                >
+                  <BellRing className="h-6 w-6" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold border-2 border-white dark:border-gray-900">
+                      {unreadCount}
+                    </span>
+                  )}
+                </Button>
+              </div>
+              <div className="pointer-events-auto">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="md:hidden"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
+                  {mobileMenuOpen ? (
+                    <X className="h-6 w-6" />
+                  ) : (
+                    <Menu className="h-6 w-6" />
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
             <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4">
-              <div className="flex flex-col space-y-3">
-                <div className="flex items-center gap-3 px-3 py-2">
+              <div className="flex flex-col space-y-3 px-3">
+                {/* User Info */}
+                <div className="flex items-center gap-3 py-2">
                   <Avatar className="h-10 w-10">
-                    {/* <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
-                     */}
                     {user ? (
                       <AvatarImage src={"/placeholder.svg"} alt={user.name} />
                     ) : (
                       <AvatarFallback>U</AvatarFallback>
                     )}
-
                     <AvatarFallback className="bg-blue-500 text-white">
                       {user.name
                         .split(" ")
@@ -940,9 +1000,56 @@ export default function StudentResourceHub() {
                     </p>
                   </div>
                 </div>
+                {/* Navigation Links */}
                 <Button
                   variant="ghost"
-                  className="justify-start"
+                  className="justify-start dark:text-gray-300 dark:hover:bg-gray-700"
+                  asChild
+                >
+                  <Link
+                    href="/student/contribute"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center w-full"
+                  >
+                    <LucideScreenShare className="mr-2 h-4 w-4" />
+                    Contribute Resources
+                  </Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="justify-start dark:text-gray-300 dark:hover:bg-gray-700"
+                  asChild
+                >
+                  <Link
+                    href="https://chat-pro-v1.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center w-full"
+                  >
+                    <BotMessageSquareIcon className="mr-2 h-4 w-4" />
+                    ChatPro Playground
+                  </Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="justify-start dark:text-gray-300 dark:hover:bg-gray-700"
+                  asChild
+                >
+                  <a
+                    href="/admin/upload"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center w-full"
+                  >
+                    <ShieldUser className="mr-2 h-4 w-4" />
+                    Admin
+                  </a>
+                </Button>
+                {/* Theme Toggle */}
+                <Button
+                  variant="ghost"
+                  className="justify-start dark:text-gray-300 dark:hover:bg-gray-700"
                   onClick={toggleDarkMode}
                 >
                   {darkMode ? (
@@ -952,21 +1059,10 @@ export default function StudentResourceHub() {
                   )}
                   {darkMode ? "Light Mode" : "Dark Mode"}
                 </Button>
-                <Button variant="ghost" className="justify-start">
-                  <BrainCircuit className="mr-2 h-4 w-4" />
-                  <span>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="/ai-tools"
-                    >
-                      Context Aware Ai{" "}
-                    </a>
-                  </span>
-                </Button>
+                {/* Logout */}
                 <Button
                   variant="ghost"
-                  className="justify-start text-red-600"
+                  className="justify-start text-red-600 dark:text-red-400 dark:hover:bg-gray-700"
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -978,25 +1074,86 @@ export default function StudentResourceHub() {
         </div>
       </nav>
 
+      {showNotifications && (
+        <div
+          className="fixed top-16 left-4 right-4 z-50 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-lg p-4 md:hidden"
+          onClick={(e) => e.stopPropagation()} // Prevent clicks from closing parent elements
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-semibold text-gray-900 dark:text-white text-lg">
+              Notifications
+            </span>
+            <button
+              onClick={markAllNotificationsRead}
+              disabled={unreadCount === 0 || notifLoading}
+              className="text-sm text-blue-600 disabled:opacity-50"
+            >
+              Mark all as read
+            </button>
+          </div>
+          <div className="max-h-44 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800">
+            {notifications.length === 0 ? (
+              <div className="text-gray-500 dark:text-gray-400 text-center py-6">
+                <Bell className="h-8 w-8 mx-auto mb-2" />
+                No notifications
+              </div>
+            ) : (
+              notifications.map((n) => (
+                <div
+                  key={n._id}
+                  className={`py-3 px-2 mb-1 rounded-lg cursor-pointer relative ${
+                    !n.read ? "bg-blue-50 dark:bg-blue-950" : "bg-transparent"
+                  }`}
+                  onClick={() => {
+                    setSelectedNotification(n);
+                    setShowNotifModal(true);
+                  }}
+                >
+                  {/* <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // prevent modal from opening
+                      handleDeleteNotification(n._id);
+                    }}
+                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900"
+                    aria-label="Delete notification"
+                  >
+                    <LucideX className="h-4 w-4 text-red-500" />
+                  </button> */}
+                  <p className="font-semibold text-gray-800 dark:text-white pr-6">
+                    {n.title}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 truncate pr-6">
+                    {n.message}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {new Date(n.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-
         {/* Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/95 via-purple-700/95 to-pink-600/95 dark:from-indigo-800/95 dark:via-purple-800/95 dark:to-pink-700/95" />
-      <Meteors number={70} />
+        <Meteors number={70} />
 
         <div className="relative container  py-24">
-        
           <div className="text-center text-white">
             <div className="flex items-center justify-center gap-4 mb-8">
-              <Sparkles className="h-12 w-12 text-amber-300 animate-pulse" />
-              <h1 className="font-poppins text-6xl md:text-8xl font-black bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent tracking-tight">
+              {/* <Sparkles className="h-12 w-12 text-amber-300 animate-pulse" /> */}
+              <h1 className="font-poppins text-6xl md:text-8xl font-black bg-gradient-to-r from-white via-zinc-200 to-purple-100 bg-clip-text text-transparent tracking-tight">
                 EduHub
               </h1>
-              <Rocket className="h-12 w-12 text-amber-300 animate-bounce" />
+              {/* <Rocket className="h-12 w-12 text-amber-300 animate-bounce" /> */}
             </div>
             {showTextEffect && (
-              <TextGenerateEffect words={"Your Ultimate Academic Resource Companion"} />
+              <TextGenerateEffect
+                words={"Your Ultimate Academic Resource Companion"}
+              />
             )}
             <div className="flex flex-wrap justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
@@ -1017,7 +1174,6 @@ export default function StudentResourceHub() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-
         {/* Stats Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 -mt-16 relative z-10">
           <StatCard
@@ -1035,20 +1191,19 @@ export default function StudentResourceHub() {
             gradient="bg-gradient-to-r from-green-500 to-green-600"
           />
           <StatCard
-            icon={Award}
+            icon={GitBranchIcon}
             title="Branches"
             value={stats.branches}
             description="Engineering streams"
             gradient="bg-gradient-to-r from-purple-500 to-purple-600"
           />
           <StatCard
-            icon={Star}
+            icon={BookmarkPlus}
             title="Subjects"
             value={stats.subjects}
             description="Available subjects"
             gradient="bg-gradient-to-r from-orange-500 to-orange-600"
           />
-          
         </div>
 
         {/* Search Section */}
@@ -1433,8 +1588,6 @@ export default function StudentResourceHub() {
             </Tabs>
           </div>
         )}
-
-        
       </div>
 
       {/* Preview Modal */}
@@ -1514,11 +1667,12 @@ export default function StudentResourceHub() {
         </div>
       )}
       {/* <Home /> */}
-      <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
+      {/* <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} EduHub. All rights reserved.
         </p>
-      </footer>
+      </footer> */}
+      <Footer />
     </div>
   );
 }

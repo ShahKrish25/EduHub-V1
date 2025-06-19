@@ -31,11 +31,14 @@ import {
   BookOpenCheck,
   FileSpreadsheet,
   LucideUsers,
+  Webhook,
 } from "lucide-react"
+import Footer from "/components/ui/footer"
 import { Avatar, AvatarFallback } from "/components/ui/avatar"
 import { Button } from "/components/ui/button"
 import { Badge } from "/components/ui/badge"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 const dotenv = require('dotenv');
 export default function AdminUploadPage() {
   dotenv.config();
@@ -437,15 +440,17 @@ export default function AdminUploadPage() {
           <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-16">
-                {/* Logo */}
-                <a href="/">
+              {/* Logo */}
+                <Link  href="/">
+                {/* <a href="/"> */}
                   <div className="flex items-center gap-2">
-                    <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
-                      <Brain className="h-6 w-6 text-white" />
+                    <div className="p-2 bg-gradient-to-r from-violet-600  to-slate-600 rounded-xl">
+                      <Webhook className="h-6 w-6 text-white" />
                     </div>
                     <span className="text-2xl font-bold text-gray-900 dark:text-white">EduHub</span>
                   </div>
-                </a>
+                  </Link>
+                {/* </a> */}
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center gap-4">
@@ -455,7 +460,8 @@ export default function AdminUploadPage() {
                   </Button>
 
                   {/* Admin Profile */}
-                  <a href="/admin/upload">
+                  {/* <a href="/admin/upload"> */}
+                    <Link href={"/admin/upload"} >
                     <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700">
                       <Avatar className="h-8 w-8">
                         <AvatarFallback className="bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold">
@@ -464,25 +470,31 @@ export default function AdminUploadPage() {
                       </Avatar>
                       <span className="text-sm font-semibold text-gray-900 dark:text-white">ADMIN</span>
                     </div>
-                  </a>
+                    </Link>
+                  {/* </a> */}
                   {/* notifications */}
-                  <a href="/admin/users" target="_blank">
+                  <Link href={"/admin/users"} >
+                  {/* <a href="/admin/users" target="_blank"> */}
                     <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
                       <Avatar className=" h-8 w-8">
                         <LucideUsers className="mt-1"/>
                       </Avatar>
                       <span className="text-sm font-semibold text-gray-900 dark:text-white">Students</span>
                     </div>
-                  </a>
+                  {/* </a> */}
+                  </Link>
                   {/* notifications */}
-                  <a href="/admin/notifications" target="_blank">
+
+                  <Link href={"/admin/notifications"} >
+                  {/* <a href="/admin/notifications" target="_blank"> */}
                     <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
                       <Avatar className=" h-8 w-8">
                         <BellPlus className="mt-1"/>
                       </Avatar>
                       <span className="text-sm font-semibold text-gray-900 dark:text-white">Notifications</span>
                     </div>
-                  </a>
+                  {/* </a> */}
+                  </Link>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -495,6 +507,7 @@ export default function AdminUploadPage() {
               {mobileMenuOpen && (
                 <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4">
                   <div className="flex flex-col space-y-3">
+                  <a href= "/admin/upload/">
                     <div className="flex items-center gap-3 px-3 py-2">
                       <Avatar className="h-10 w-10">
                         <AvatarFallback className="bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold">
@@ -506,6 +519,27 @@ export default function AdminUploadPage() {
                         <p className="text-xs text-gray-500 dark:text-gray-400">Administrator</p>
                       </div>
                     </div>
+                    </a>
+
+                    <a href="/admin/users" target="_parent">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
+                      <Avatar className=" h-8 w-8">
+                        <LucideUsers className="mt-1"/>
+                      </Avatar>
+                      <span className="text-sm font-semibold text-gray-900 dark:text-white">Students</span>
+                    </div>
+                  </a>
+
+                  <a href="/admin/notifications" target="_parent">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/40 dark:to-blue-900/40 border border-gray-200 dark:border-gray-700 cursor-pointer">
+                      <Avatar className=" h-8 w-8">
+                        <BellPlus className="mt-1"/>
+                      </Avatar>
+                      <span className="text-sm font-semibold text-gray-900 dark:text-white">Notifications</span>
+                    </div>
+                  </a>
+
+
                     <Button variant="ghost" className="justify-start" onClick={toggleDarkMode}>
                       {darkMode ? <Sun className="mr-2 h-4 w-4 text-yellow-400" /> : <Moon className="mr-2 h-4 w-4" />}
                       {darkMode ? "Light Mode" : "Dark Mode"}
@@ -1343,11 +1377,7 @@ export default function AdminUploadPage() {
             </div>
           )}
 
-          <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
-            <p className="text-gray-500 dark:text-gray-400">
-              © {new Date().getFullYear()} EduHub. All rights reserved.
-            </p>
-          </footer>
+          <Footer />
         </>
       )}
     </div>

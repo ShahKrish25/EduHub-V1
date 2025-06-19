@@ -11,8 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "/components/ui/card";
+import Footer from "/components/ui/footer"
 import { Button } from "/components/ui/button"
-import { Youtube, FileText, BookOpen, Calendar, Mail, Upload, Send, CheckCircle, Heart, Star, Users, Sparkles, Target, Bell, Sun, Moon, ChevronDown, Menu, X, AlertCircle, Info, X as LucideX, Trash2, Brain, BrainCircuit, ShieldUser, User , LogOut, BotMessageSquareIcon} from 'lucide-react';
+import { Youtube, FileText, BookOpen, Calendar, Mail, Upload, Send, CheckCircle, Heart, Star, Users, Sparkles, Target, Bell, BellRing, Sun, Moon, ChevronDown, Menu, X, AlertCircle, Info, X as LucideX, Trash2, Brain, BrainCircuit, ShieldUser, User , LogOut, BotMessageSquareIcon, FlameIcon, UserSquare2, Webhook} from 'lucide-react';
 import { Input } from "/components/ui/input";
 import { Textarea } from "/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "/components/ui/select";
@@ -112,7 +113,8 @@ export default function Home() {
         }
         setUser({
           name: data.username,
-          email: data.email
+          email: data.email,
+          role : data.role
         });
       })
       .catch((error) => {
@@ -321,16 +323,18 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <a href="/">
+            {/* <a href="/"> */}
+            <Link href={"/"}>
             <div className="flex items-center gap-2">
-               <div className="p-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-xl">
-              <Brain className="h-6 w-6 text-white" />
+               <div className="p-2 bg-gradient-to-r from-violet-600  to-slate-600 rounded-xl">
+              <Webhook className="h-6 w-6 text-white" />
             </div>
               <span className="text-2xl font-bold text-gray-900 dark:text-white">
                 EduHub
               </span>
             </div>
-            </a>
+            </Link>
+            {/* </a> */}
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-4">
@@ -343,7 +347,7 @@ export default function Home() {
                   aria-label="Show notifications"
                   onClick={() => setShowNotifications((v) => !v)}
                 >
-                  <Bell className="h-5 w-5" />
+                  <BellRing className="h-5 w-5" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold border-2 border-white dark:border-gray-900">{unreadCount}</span>
                   )}
@@ -368,7 +372,7 @@ export default function Home() {
                   <div className="max-h-96 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800 p-2 sm:p-3">
                     {notifications.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-10 text-gray-400 dark:text-gray-500">
-                        <Bell className="h-10 w-10 mb-2" />
+                        <BellRing className="h-10 w-10 mb-2" />
                         <span className="text-base">No notifications yet</span>
                       </div>
                     ) : (
@@ -389,14 +393,14 @@ export default function Home() {
                             <div className="text-sm text-gray-600 dark:text-gray-300 truncate">{n.message}</div>
                             <div className="text-xs text-gray-400 mt-1">{new Date(n.createdAt).toLocaleString()}</div>
                           </div>
-                          <button
+                          {/* <button
                             className="ml-2 p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition-colors"
                             aria-label="Delete notification"
                             onClick={e => { e.stopPropagation(); handleDeleteNotification(n._id); }}
                             disabled={notifLoading}
                           >
                             <LucideX className="h-4 w-4 text-red-500" />
-                          </button>
+                          </button> */}
                         </div>
                       ))
                     )}
@@ -451,8 +455,8 @@ export default function Home() {
                   align="end"
                   className="w-56 dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <DropdownMenuLabel className="dark:text-white">
-                    My Account
+                  <DropdownMenuLabel className="dark:text-white flex gap-3 items-center">
+                  {user.role === 'admin' ? <><ShieldUser />Administer </> : <> <UserSquare2 /> Student Profile</>} 
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="dark:bg-gray-700" />
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
@@ -465,7 +469,7 @@ export default function Home() {
                   </DropdownMenuItem>
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
                     <BrainCircuit className="mr-2 h-4 w-4" />
-                    <span><a target="_blank" rel="noopener noreferrer" href="/ai-tools">Context Aware Ai </a></span>
+                    <span><Link href="/ai-tools">Context Aware Ai </Link></span>
                   </DropdownMenuItem>
                   {/* Link to Resources Page */}
                    <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
@@ -494,7 +498,7 @@ export default function Home() {
                   </DropdownMenuItem>
                   <DropdownMenuItem className="dark:text-gray-300 dark:hover:bg-gray-700">
                     <ShieldUser  className="mr-2 h-4 w-4" />
-                    <span><a target="_blank" rel="noopener noreferrer" href="/admin/upload">Admin</a></span>
+                    <span><Link target="_blank" href="/admin/upload">Admin</Link></span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="dark:bg-gray-700" />
                   <DropdownMenuItem
@@ -958,11 +962,12 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
+      {/* <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center">
         <p className="text-gray-500 dark:text-gray-400">
           © {new Date().getFullYear()} EduHub. All rights reserved.
         </p>
-      </footer>
+      </footer> */}
+      <Footer />
     </div>
   );
 }

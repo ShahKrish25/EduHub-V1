@@ -19,6 +19,7 @@ import {
   Brain,
   GraduationCap,
   Star,
+  Webhook,
 } from "lucide-react"
 import { Button } from "/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "/components/ui/card"
@@ -107,7 +108,7 @@ export default function LoginPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="p-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-4 inline-block">
-            <Brain className="h-12 w-12 text-white animate-pulse" />
+            <Webhook className="h-12 w-12 text-white animate-pulse" />
           </div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             EduHub
