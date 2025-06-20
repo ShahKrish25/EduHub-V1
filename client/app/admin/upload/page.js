@@ -219,6 +219,15 @@ export default function AdminUploadPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    // File size check before anything else
+    const MAX_FILE_SIZE_MB = 10;
+    if (file && file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      setMessage("File is too large. Maximum allowed size is 10MB. Compress the file..");
+      setMessageType("error");
+      return;
+    }
+
     setIsLoading(true)
 
     // const token = localStorage.getItem("studyhub_token")
@@ -226,6 +235,8 @@ export default function AdminUploadPage() {
     //   window.location.href = "/login"
     //   return
     // }
+
+    
 
     const formData = new FormData()
     formData.append("branch", branch)
@@ -237,14 +248,18 @@ export default function AdminUploadPage() {
 
     if (type === "timetable") {
       if (timetableFormat === "image") {
-        if (file) formData.append("file", file)
+        if (file) {
+          formData.append("file", file)
+        }
       } else {
         const headers = ["Day", "Date", "Start Time", "End Time", "Subject/Exam"]
         const rows = examRows.map((row) => [row.day, row.date, row.startTime, row.endTime, row.subject])
         formData.append("tableData", JSON.stringify({ headers, rows }))
       }
     } else {
-      if (file) formData.append("file", file)
+      if (file) {
+        formData.append("file", file)
+      }
       if (link) formData.append("link", link)
     }
 
